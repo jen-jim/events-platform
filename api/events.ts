@@ -1,6 +1,6 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
-import { getUserFromReq } from "./lib/auth";
-import prisma from "./lib/prisma";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { getUserFromReq } from "./lib/auth.ts";
+import prisma from "./lib/prisma.ts";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {

@@ -39,5 +39,11 @@
         "typescript-eslint": "^8.45.0",
         "vercel": "^48.2.9",
         "vite": "^7.1.7"
+    },
+    "overrides": {
+        "@vercel/node": {
+            "@types/node": "24.6.0",
+            "typescript": "5.9.3"
+        }
     }
 }
