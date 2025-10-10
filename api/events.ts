@@ -1,15 +1,42 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql } from "@vercel/postgres"; // if using Vercel Postgres
+import { getUserFromReq } from "./lib/auth";
+import prisma from "./lib/prisma";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    if (req.method !== "GET") return res.status(405).send("Method Not Allowed");
-
-    try {
-        const result =
-            await sql`SELECT id, title, start_time FROM events LIMIT 20`;
-        res.status(200).json({ events: result.rows });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Database query failed" });
+    if (req.method === "GET") {
+        // return events from DB (paginated later)
+        const events = await prisma.event.findMany({
+            orderBy: { startTime: "asc" }
+        });
+        return res.json({ events });
     }
+
+    if (req.method === "POST") {
+        // staff only
+        const user = getUserFromReq(req);
+        if (!user || user.role !== "staff")
+            return res.status(403).json({ error: "Not authorized" });
+
+        const { title, description, startTime, endTime, location, price } =
+            req.body;
+        try {
+            const event = await prisma.event.create({
+                data: {
+                    title,
+                    description,
+                    startTime: new Date(startTime),
+                    endTime: endTime ? new Date(endTime) : null,
+                    location,
+                    price: price || 0,
+                    createdBy: user.id
+                }
+            });
+            return res.status(201).json({ event });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Create event failed" });
+        }
+    }
+
+    return res.status(405).send("Method Not Allowed").end();
 }
