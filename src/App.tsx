@@ -3,6 +3,8 @@ import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./context/AuthProvider";
 import { CreateEvent } from "./pages/CreateEvent";
 import Home from "./pages/Home";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
 export default function App() {
     return (
@@ -24,6 +26,8 @@ export default function App() {
                                 />
                             }
                         />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                     </Routes>
                 </div>
             </Router>

@@ -1,18 +1,25 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export function Navbar() {
+    const { user } = useContext(AuthContext);
+
     return (
         <nav className="p-4 border-b mb-4 flex justify-between items-center bg-gray-50">
             <Link to="/" className="font-bold text-xl">
-                🎟 Event Manager
+                Home
             </Link>
-            <div className="space-x-4">
-                <Link to="/" className="hover:underline">
-                    Home
-                </Link>
-                <Link to="/create" className="hover:underline">
-                    Create
-                </Link>
+            <div>
+                {user?.role === "staff" && (
+                    <Link to="/create">Create Event</Link>
+                )}
+                {!user && (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </>
+                )}
             </div>
         </nav>
     );
