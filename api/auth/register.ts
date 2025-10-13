@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import bcrypt from "bcrypt";
+import { setTokenCookie, signToken } from "../lib/auth.ts";
 import prisma from "../lib/prisma.ts";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -18,15 +19,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-        const hashed = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await prisma.user.create({
             data: {
                 email,
-                password: hashed,
+                password: hashedPassword,
                 role: role || "user"
             }
         });
+
+        // create JWT token
+        const token = signToken({
+            id: user.id,
+            email: user.email,
+            role: user.role
+        });
+
+        // Set cookie
+        setTokenCookie(res, token);
 
         return res.status(201).json({
             id: user.id,
@@ -34,6 +45,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             role: user.role
         });
     } catch (err) {
+        if (
+            typeof err === "object" &&
+            err !== null &&
+            "code" in err &&
+            (err as { code?: string }).code === "P2002"
+        ) {
+            return res.status(400).json({ error: "Email already in use" });
+        }
         console.error(err);
         return res.status(500).json({ error: "Registration failed" });
     }
