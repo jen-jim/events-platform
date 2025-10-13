@@ -6,24 +6,35 @@ export function CreateEvent() {
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("");
     const [location, setLocation] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+        setLoading(true);
+        setMessage("");
         try {
             await createEvent({ title, description, startTime, location });
-            alert("Event created!");
+            setMessage("✅ Event created successfully!");
             setTitle("");
             setDescription("");
             setStartTime("");
             setLocation("");
         } catch {
-            alert("Failed to create event");
+            setMessage("❌ Failed to create event.");
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-3">
+        <form
+            onSubmit={handleSubmit}
+            className="max-w-md mx-auto space-y-3"
+            aria-live="polite"
+        >
             <h2 className="text-xl font-bold">Create Event</h2>
+
             <input
                 type="text"
                 placeholder="Title"
@@ -32,12 +43,14 @@ export function CreateEvent() {
                 required
                 className="border p-2 w-full"
             />
+
             <textarea
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="border p-2 w-full"
             />
+
             <input
                 type="datetime-local"
                 value={startTime}
@@ -45,6 +58,7 @@ export function CreateEvent() {
                 required
                 className="border p-2 w-full"
             />
+
             <input
                 type="text"
                 placeholder="Location"
@@ -52,12 +66,30 @@ export function CreateEvent() {
                 onChange={(e) => setLocation(e.target.value)}
                 className="border p-2 w-full"
             />
+
             <button
                 type="submit"
-                className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
+                disabled={loading}
+                className={`px-3 py-2 rounded text-white ${
+                    loading
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-green-600 hover:bg-green-700"
+                }`}
             >
-                Create
+                {loading ? "Creating..." : "Create"}
             </button>
+
+            {message && (
+                <p
+                    className={`mt-2 font-medium ${
+                        message.startsWith("✅")
+                            ? "text-green-600"
+                            : "text-red-600"
+                    }`}
+                >
+                    {message}
+                </p>
+            )}
         </form>
     );
 }
