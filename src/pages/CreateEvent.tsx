@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { createEvent } from "../services/api";
 
 export function CreateEvent({
@@ -6,12 +7,21 @@ export function CreateEvent({
 }: {
     onEventCreated: () => void;
 }) {
+    const { user } = useContext(AuthContext);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("");
     const [location, setLocation] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+
+    if (!user || user.role !== "staff") {
+        return (
+            <p className="text-red-600">
+                You must be a staff member to create events.
+            </p>
+        );
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
