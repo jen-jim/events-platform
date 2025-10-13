@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { loginUser } from "../services/api";
 
 export function Login() {
     const { refreshUser } = useContext(AuthContext);
@@ -8,22 +8,37 @@ export function Login() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
         setMessage("");
+
         try {
-            await loginUser({ email, password });
-            setMessage("Logged in successfully!");
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                throw new Error(error || "Login failed");
+            }
+
+            setMessage("✅ Logged in successfully!");
             setEmail("");
             setPassword("");
+
             await refreshUser(); // update context
+
+            navigate("/");
         } catch (err: unknown) {
             if (err instanceof Error) {
-                setMessage(`${err.message}`);
+                setMessage(`❌ ${err.message}`);
             } else {
-                setMessage("Login failed");
+                setMessage("❌ Login failed");
             }
         } finally {
             setLoading(false);
@@ -33,6 +48,7 @@ export function Login() {
     return (
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-3">
             <h2 className="text-xl font-bold">Login</h2>
+
             <input
                 type="email"
                 placeholder="Email"
@@ -41,6 +57,7 @@ export function Login() {
                 required
                 className="border p-2 w-full"
             />
+
             <input
                 type="password"
                 placeholder="Password"
@@ -49,6 +66,7 @@ export function Login() {
                 required
                 className="border p-2 w-full"
             />
+
             <button
                 type="submit"
                 className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700"
@@ -56,7 +74,18 @@ export function Login() {
             >
                 {loading ? "Logging in..." : "Login"}
             </button>
-            {message && <p>{message}</p>}
+
+            {message && (
+                <p
+                    className={
+                        message.startsWith("✅")
+                            ? "text-green-600"
+                            : "text-red-600"
+                    }
+                >
+                    {message}
+                </p>
+            )}
         </form>
     );
 }
