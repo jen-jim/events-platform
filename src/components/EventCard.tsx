@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { type Event, signupForEvent } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
 
