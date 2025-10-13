@@ -1,13 +1,20 @@
-import { EventsList } from "./components/EventsList";
+import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { CreateEvent } from "./pages/CreateEvent";
+import Home from "./pages/Home";
 
 export default function App() {
     return (
-        <div className="p-4 max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Event Manager</h1>
-            <EventsList />
-            <hr className="my-6" />
-            <CreateEvent />
-        </div>
+        <Router>
+            <nav className="p-4 border-b mb-4 flex gap-4">
+                <Link to="/">Home</Link>
+                <Link to="/create">Create Event</Link>
+            </nav>
+            <div className="p-4 max-w-2xl mx-auto">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/create" element={<CreateEvent />} />
+                </Routes>
+            </div>
+        </Router>
     );
 }
