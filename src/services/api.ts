@@ -1,3 +1,7 @@
+interface AuthPayload {
+    email: string;
+    password: string;
+}
 export interface Event {
     id: number;
     title: string;
@@ -6,6 +10,26 @@ export interface Event {
     endTime?: string;
     location?: string;
     price?: number;
+}
+
+export async function signUpUser(body: AuthPayload) {
+    const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error("Registration failed");
+    return res.json();
+}
+
+export async function loginUser(body: AuthPayload) {
+    const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error("Login failed");
+    return res.json();
 }
 
 export async function fetchEvents(): Promise<Event[]> {
