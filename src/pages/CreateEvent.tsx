@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { createEvent } from "../services/api";
 
@@ -14,14 +15,13 @@ export function CreateEvent({
     const [location, setLocation] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
-    if (!user || user.role !== "staff") {
-        return (
-            <p className="text-red-600">
-                You must be a staff member to create events.
-            </p>
-        );
-    }
+    useEffect(() => {
+        if (user?.role !== "staff") {
+            navigate("/"); // redirect non-staff to home
+        }
+    }, [navigate, user]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();

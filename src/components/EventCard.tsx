@@ -13,9 +13,8 @@ export function EventCard({ event }: { event: Event }) {
             return;
         }
 
-        const email = user.email;
         try {
-            await signupForEvent(event.id, email);
+            await signupForEvent(event.id, user.email);
             setSignedUp(true);
             alert("Signed up!");
         } catch {
@@ -24,7 +23,11 @@ export function EventCard({ event }: { event: Event }) {
     }
 
     return (
-        <div className="border rounded-lg shadow p-4 mb-4 flex flex-col gap-2">
+        <div
+            className="border rounded-lg shadow p-4 mb-4 flex flex-col gap-2"
+            role="group"
+            aria-label={`Event: ${event.title}`}
+        >
             <h3 className="text-lg font-semibold">{event.title}</h3>
             <p>{event.description}</p>
             <p>
@@ -32,6 +35,8 @@ export function EventCard({ event }: { event: Event }) {
                 {event.endTime &&
                     " - " + new Date(event.endTime).toLocaleString()}
             </p>
+            {event.location && <p>📍 {event.location}</p>}
+            {event.price && <p>💰 ${event.price}</p>}
 
             {user ? (
                 !signedUp ? (
@@ -52,9 +57,7 @@ export function EventCard({ event }: { event: Event }) {
                     </a>
                 )
             ) : (
-                <p className="text-gray-500">
-                    Log in to sign up for this event.
-                </p>
+                <p className="text-gray-500 italic">Log in to sign up</p>
             )}
         </div>
     );
