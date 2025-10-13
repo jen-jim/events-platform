@@ -10,7 +10,18 @@ export default function App() {
             <div className="p-4 max-w-2xl mx-auto">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/create" element={<CreateEvent />} />
+                    <Route
+                        path="/create"
+                        element={
+                            <CreateEvent
+                                onEventCreated={function (): void {
+                                    throw new Error(
+                                        "Function not implemented."
+                                    );
+                                }}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </Router>

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { createEvent } from "../services/api";
 
-export function CreateEvent() {
+export function CreateEvent({
+    onEventCreated
+}: {
+    onEventCreated: () => void;
+}) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("");
@@ -20,6 +24,8 @@ export function CreateEvent() {
             setDescription("");
             setStartTime("");
             setLocation("");
+
+            onEventCreated();
         } catch {
             setMessage("❌ Failed to create event.");
         } finally {
