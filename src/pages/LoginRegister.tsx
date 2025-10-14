@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { loginUser, signUpUser } from "../services/api";
 
@@ -12,17 +13,15 @@ export function LoginRegister() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [staffKey, setStaffKey] = useState("");
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
-        setMessage("");
 
         try {
             if (isRegister) {
                 if (password !== confirmPassword) {
-                    setMessage("❌ Passwords do not match.");
+                    toast.error("Passwords do not match.");
                     return;
                 }
 
@@ -32,12 +31,12 @@ export function LoginRegister() {
                     password,
                     staffKey: staffKey || undefined
                 });
-                setMessage(
-                    `✅ Registration successful! Registered as ${role}.`
+                toast.success(
+                    `Registration successful! Registered as ${role}.`
                 );
             } else {
                 await loginUser({ email, password });
-                setMessage("✅ Login successful!");
+                toast.success("Login successful!");
             }
 
             setEmail("");
@@ -46,8 +45,8 @@ export function LoginRegister() {
             setStaffKey("");
             await refreshUser();
         } catch (err: unknown) {
-            if (err instanceof Error) setMessage(err.message);
-            else setMessage("❌ Something went wrong.");
+            if (err instanceof Error) toast.error(err.message);
+            else toast.error("Something went wrong.");
         } finally {
             setLoading(false);
         }
@@ -119,8 +118,6 @@ export function LoginRegister() {
                         : "Login"}
                 </button>
             </form>
-
-            {message && <p className="mt-3">{message}</p>}
 
             <p className="mt-4 text-center">
                 {isRegister

@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { deleteEvent, type Event, signupForEvent } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
@@ -15,16 +16,16 @@ export function EventCard({
 
     async function handleSignup() {
         if (!user) {
-            alert("You must be logged in to sign up!");
+            toast.error("You must be logged in to sign up!");
             return;
         }
 
         try {
             await signupForEvent(event.id, user.email);
             setSignedUp(true);
-            alert("Signed up!");
+            toast.success("Signed up!");
         } catch {
-            alert("Signup failed");
+            toast.error("Signup failed");
         }
     }
 
@@ -33,9 +34,9 @@ export function EventCard({
         try {
             await deleteEvent(event.id);
             setEvents((prev) => prev.filter((e) => e.id !== event.id));
-            alert("Event deleted!");
+            toast.success("Event deleted!");
         } catch {
-            alert("Failed to delete event");
+            toast.error("Failed to delete event");
         }
     }
 

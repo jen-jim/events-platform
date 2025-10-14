@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { createEvent } from "../services/api";
 
@@ -36,10 +37,10 @@ export function CreateEvent({
             setEndTime("");
             setLocation("");
             setPrice("");
-            alert("Event created!");
+            toast.success("Event created!");
             onEventCreated?.();
         } catch {
-            alert("Failed to create event");
+            toast.error("Failed to create event");
         } finally {
             setLoading(false);
         }

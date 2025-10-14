@@ -30,8 +30,9 @@ export function Profile() {
             await fetch("/api/auth/logout", { method: "POST" });
             refreshUser();
             navigate("/");
+            toast.success("Logged out successfully!");
         } catch {
-            alert("Logout failed");
+            toast.error("Failed to log out.");
         }
     }
 
