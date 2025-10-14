@@ -25,8 +25,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const hashed = await bcrypt.hash(password, 10);
 
-        const isStaff = staffKey && staffKey === process.env.STAFF_REG_KEY;
-        const role = isStaff ? "staff" : "user";
+        let role = "user";
+
+        if (!staffKey) {
+            role = "user";
+        }
+        if (staffKey) {
+            if (staffKey !== process.env.STAFF_REG_KEY) {
+                return res.status(400).json({ error: "❌ Invalid staff key" });
+            } else {
+                role = "staff";
+            }
+        }
 
         const user = await prisma.user.create({
             data: { email, password: hashed, role }
@@ -42,8 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(201).json({
             id: user.id,
             email: user.email,
-            role: user.role,
-            message: isStaff ? "Staff account created" : "User account created"
+            role: user.role
         });
     } catch (err) {
         console.error(err);

@@ -9,8 +9,8 @@ export function Navbar() {
     async function handleLogout() {
         try {
             await fetch("/api/auth/logout", { method: "POST" });
-            refreshUser(); // resets user in context
-            navigate("/login");
+            refreshUser();
+            navigate("/auth");
         } catch {
             alert("Logout failed");
         }
@@ -33,20 +33,7 @@ export function Navbar() {
                         </button>
                     </>
                 ) : (
-                    <>
-                        <Link
-                            to="/login"
-                            className="text-blue-600 hover:underline"
-                        >
-                            Login
-                        </Link>
-                        <Link
-                            to="/register"
-                            className="text-blue-600 hover:underline"
-                        >
-                            Register
-                        </Link>
-                    </>
+                    <Link to="/auth">Login / Register</Link>
                 )}
             </div>
         </nav>

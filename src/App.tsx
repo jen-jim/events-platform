@@ -2,8 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
+import { LoginRegister } from "./pages/LoginRegister";
 
 export default function App() {
     return (
@@ -13,8 +12,7 @@ export default function App() {
                 <div className="p-4 max-w-2xl mx-auto">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
+                        <Route path="/auth" element={<LoginRegister />} />
                     </Routes>
                 </div>
             </Router>
