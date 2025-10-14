@@ -3,7 +3,8 @@ import { createContext } from "react";
 export interface User {
     id: number;
     email: string;
-    role: string;
+    role: "user" | "staff";
+    createdAt: string;
 }
 
 interface AuthContextType {

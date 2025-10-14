@@ -3,6 +3,7 @@ import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { Home } from "./pages/Home";
 import { LoginRegister } from "./pages/LoginRegister";
+import { Profile } from "./pages/Profile";
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/auth" element={<LoginRegister />} />
+                        <Route path="/profile" element={<Profile />} />
                     </Routes>
                 </div>
             </Router>
