@@ -1,7 +1,3 @@
-interface AuthPayload {
-    email: string;
-    password: string;
-}
 export interface Event {
     id: number;
     title: string;
@@ -12,23 +8,33 @@ export interface Event {
     price?: number;
 }
 
-export async function signUpUser(body: AuthPayload) {
+export async function signUpUser(body: {
+    email: string;
+    password: string;
+    staffKey?: string;
+}) {
     const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
-    if (!res.ok) throw new Error("Registration failed");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Registration failed");
+    }
     return res.json();
 }
 
-export async function loginUser(body: AuthPayload) {
+export async function loginUser(body: { email: string; password: string }) {
     const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
-    if (!res.ok) throw new Error("Login failed");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Login failed");
+    }
     return res.json();
 }
 

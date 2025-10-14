@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { loginUser } from "../services/api";
 
 export function Login() {
     const { refreshUser } = useContext(AuthContext);
@@ -8,7 +8,6 @@ export function Login() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const navigate = useNavigate();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -16,30 +15,14 @@ export function Login() {
         setMessage("");
 
         try {
-            const res = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
-
-            if (!res.ok) {
-                const { error } = await res.json();
-                throw new Error(error || "Login failed");
-            }
-
-            setMessage("✅ Logged in successfully!");
+            await loginUser({ email, password });
+            setMessage("✅ Login successful!");
             setEmail("");
             setPassword("");
-
-            await refreshUser(); // update context
-
-            navigate("/");
+            await refreshUser();
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setMessage(`❌ ${err.message}`);
-            } else {
-                setMessage("❌ Login failed");
-            }
+            if (err instanceof Error) setMessage(`❌ ${err.message}`);
+            else setMessage("❌ Login failed");
         } finally {
             setLoading(false);
         }
@@ -75,17 +58,7 @@ export function Login() {
                 {loading ? "Logging in..." : "Login"}
             </button>
 
-            {message && (
-                <p
-                    className={
-                        message.startsWith("✅")
-                            ? "text-green-600"
-                            : "text-red-600"
-                    }
-                >
-                    {message}
-                </p>
-            )}
+            {message && <p>{message}</p>}
         </form>
     );
 }

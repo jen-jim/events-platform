@@ -1,45 +1,41 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { signUpUser } from "../services/api";
 
 export function Register() {
     const { refreshUser } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const navigate = useNavigate();
+    const [staffKey, setStaffKey] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
         setMessage("");
 
+        if (password !== confirmPassword) {
+            setMessage("❌ Passwords do not match.");
+            return;
+        }
+
         try {
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+            await signUpUser({
+                email,
+                password,
+                staffKey: staffKey || undefined
             });
-
-            if (!res.ok) {
-                const { error } = await res.json();
-                throw new Error(error || "Registration failed");
-            }
-
             setMessage("✅ Registration successful!");
             setEmail("");
             setPassword("");
-
-            await refreshUser(); // update AuthContext
-
-            navigate("/");
+            setConfirmPassword("");
+            setStaffKey("");
+            await refreshUser();
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setMessage(`❌ ${err.message}`);
-            } else {
-                setMessage("❌ Registration failed");
-            }
+            if (err instanceof Error) setMessage(`❌ ${err.message}`);
+            else setMessage("❌ Registration failed");
         } finally {
             setLoading(false);
         }
@@ -67,6 +63,23 @@ export function Register() {
                 className="border p-2 w-full"
             />
 
+            <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="border p-2 w-full"
+            />
+
+            <input
+                type="text"
+                placeholder="(Optional) Staff Key"
+                value={staffKey}
+                onChange={(e) => setStaffKey(e.target.value)}
+                className="border p-2 w-full"
+            />
+
             <button
                 type="submit"
                 className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
@@ -75,17 +88,7 @@ export function Register() {
                 {loading ? "Registering..." : "Register"}
             </button>
 
-            {message && (
-                <p
-                    className={
-                        message.startsWith("✅")
-                            ? "text-green-600"
-                            : "text-red-600"
-                    }
-                >
-                    {message}
-                </p>
-            )}
+            {message && <p>{message}</p>}
         </form>
     );
 }

@@ -8,52 +8,45 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { email, password, role } = req.body as {
+    const { email, password, staffKey } = req.body as {
         email?: string;
         password?: string;
-        role?: string;
+        staffKey?: string;
     };
 
-    if (!email || !password) {
+    if (!email || !password)
         return res.status(400).json({ error: "Missing fields" });
-    }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const existing = await prisma.user.findUnique({ where: { email } });
+        if (existing) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+
+        const hashed = await bcrypt.hash(password, 10);
+
+        const isStaff = staffKey && staffKey === process.env.STAFF_REG_KEY;
+        const role = isStaff ? "staff" : "user";
 
         const user = await prisma.user.create({
-            data: {
-                email,
-                password: hashedPassword,
-                role: role || "user"
-            }
+            data: { email, password: hashed, role }
         });
 
-        // create JWT token
         const token = signToken({
             id: user.id,
             email: user.email,
             role: user.role
         });
-
-        // Set cookie
         setTokenCookie(res, token);
 
-        return res.status(201).json({
+        res.status(201).json({
             id: user.id,
             email: user.email,
-            role: user.role
+            role: user.role,
+            message: isStaff ? "Staff account created" : "User account created"
         });
     } catch (err) {
-        if (
-            typeof err === "object" &&
-            err !== null &&
-            "code" in err &&
-            (err as { code?: string }).code === "P2002"
-        ) {
-            return res.status(400).json({ error: "Email already in use" });
-        }
         console.error(err);
-        return res.status(500).json({ error: "Registration failed" });
+        res.status(500).json({ error: "Registration failed" });
     }
 }
