@@ -31,8 +31,8 @@ model Event {
   endTime     DateTime?
   location    String?
   price       Float?    @default(0)
-  createdBy   Int
-  creator     User      @relation(fields: [createdBy], references: [id])
+  createdBy   Int?
+  creator     User?      @relation(fields: [createdBy], references: [id])
   createdAt   DateTime  @default(now())
   Signup      Signup[]
 }

@@ -8,8 +8,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const userData = getUserFromReq(req);
-    if (!userData) return res.status(401).json({ error: "Not authorized" });
+    const user = getUserFromReq(req);
+    if (!user) return res.status(401).json({ error: "Not authorised" });
 
     const { name, email, password } = req.body as {
         name?: string;
@@ -28,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (password) updateData.password = await bcrypt.hash(password, 10);
 
         const updatedUser = await prisma.user.update({
-            where: { id: userData.id },
+            where: { id: user.id },
             data: updateData,
             select: {
                 id: true,

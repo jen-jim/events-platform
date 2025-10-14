@@ -17,6 +17,29 @@ export function Profile() {
 
     if (loading) return <p>Loading profile...</p>;
 
+    async function handleDeleteProfile() {
+        if (
+            !confirm(
+                "Are you sure you want to delete your account? This cannot be undone."
+            )
+        )
+            return;
+
+        try {
+            const res = await fetch("/api/auth/delete", { method: "DELETE" });
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || "Failed to delete profile");
+            }
+
+            toast.success("Account deleted successfully!");
+            await handleLogout();
+        } catch (err) {
+            if (err instanceof Error) toast.error(err.message);
+            else toast.error("Failed to delete profile");
+        }
+    }
+
     if (!user) {
         return (
             <p className="text-center mt-8 text-gray-600">
@@ -195,6 +218,12 @@ export function Profile() {
                     className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                 >
                     Logout
+                </button>
+                <button
+                    onClick={handleDeleteProfile}
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                >
+                    Delete Account
                 </button>
             </div>
         </div>
