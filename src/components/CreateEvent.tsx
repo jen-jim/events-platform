@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { createEvent } from "../services/api";
 
@@ -16,19 +15,12 @@ export function CreateEvent({
     const [location, setLocation] = useState("");
     const [price, setPrice] = useState<number | "">("");
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (user?.role !== "staff") {
-            navigate("/"); // redirect non-staff to home
-        }
-    }, [navigate, user]);
+    if (!user || user.role !== "staff") return null;
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
-        setMessage("");
         try {
             await createEvent({
                 title,
@@ -38,26 +30,27 @@ export function CreateEvent({
                 location,
                 price: price === "" ? 0 : Number(price)
             });
-            setMessage("✅ Event created successfully!");
             setTitle("");
             setDescription("");
             setStartTime("");
             setEndTime("");
             setLocation("");
             setPrice("");
-
-            onEventCreated();
+            alert("Event created!");
+            onEventCreated?.();
         } catch {
-            setMessage("❌ Failed to create event.");
+            alert("Failed to create event");
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-3">
-            <h2 className="text-xl font-bold">Create Event</h2>
-
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-3 border p-4 rounded-lg"
+        >
+            <h3 className="font-semibold text-lg">Create New Event</h3>
             <input
                 type="text"
                 placeholder="Title"
@@ -66,35 +59,25 @@ export function CreateEvent({
                 required
                 className="border p-2 w-full"
             />
-
             <textarea
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="border p-2 w-full"
             />
-
-            <label className="block">
-                <span className="text-sm text-gray-600">Start Time</span>
-                <input
-                    type="datetime-local"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    required
-                    className="border p-2 w-full"
-                />
-            </label>
-
-            <label className="block">
-                <span className="text-sm text-gray-600">End Time</span>
-                <input
-                    type="datetime-local"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="border p-2 w-full"
-                />
-            </label>
-
+            <input
+                type="datetime-local"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                required
+                className="border p-2 w-full"
+            />
+            <input
+                type="datetime-local"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                className="border p-2 w-full"
+            />
             <input
                 type="text"
                 placeholder="Location"
@@ -102,10 +85,9 @@ export function CreateEvent({
                 onChange={(e) => setLocation(e.target.value)}
                 className="border p-2 w-full"
             />
-
             <input
                 type="number"
-                placeholder="Price (optional)"
+                placeholder="Price (£)"
                 value={price}
                 onChange={(e) =>
                     setPrice(
@@ -113,29 +95,14 @@ export function CreateEvent({
                     )
                 }
                 className="border p-2 w-full"
-                min="0"
-                step="0.01"
             />
-
             <button
                 type="submit"
-                className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
                 disabled={loading}
+                className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
             >
                 {loading ? "Creating..." : "Create Event"}
             </button>
-
-            {message && (
-                <p
-                    className={`text-sm ${
-                        message.startsWith("✅")
-                            ? "text-green-600"
-                            : "text-red-600"
-                    }`}
-                >
-                    {message}
-                </p>
-            )}
         </form>
     );
 }

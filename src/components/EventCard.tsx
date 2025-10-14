@@ -5,10 +5,10 @@ import { gcalUrl } from "../utils/calendar";
 
 export function EventCard({
     event,
-    onDeleted
+    setEvents
 }: {
     event: Event;
-    onDeleted?: () => void;
+    setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
 }) {
     const { user } = useContext(AuthContext);
     const [signedUp, setSignedUp] = useState(false);
@@ -32,8 +32,8 @@ export function EventCard({
         if (!confirm("Are you sure you want to delete this event?")) return;
         try {
             await deleteEvent(event.id);
+            setEvents((prev) => prev.filter((e) => e.id !== event.id));
             alert("Event deleted!");
-            onDeleted?.();
         } catch {
             alert("Failed to delete event");
         }

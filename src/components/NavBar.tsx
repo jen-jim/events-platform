@@ -22,15 +22,6 @@ export function Navbar() {
                 Home
             </Link>
             <div className="flex items-center gap-4">
-                {user?.role === "staff" && (
-                    <Link
-                        to="/create"
-                        className="text-blue-600 hover:underline"
-                    >
-                        Create Event
-                    </Link>
-                )}
-
                 {user ? (
                     <>
                         <span>👤 {user.email}</span>
