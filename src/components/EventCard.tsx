@@ -31,12 +31,28 @@ export function EventCard({ event }: { event: Event }) {
             <h3 className="text-lg font-semibold">{event.title}</h3>
             <p>{event.description}</p>
             <p>
-                {new Date(event.startTime).toLocaleString()}
+                🕒{" "}
+                {new Date(event.startTime).toLocaleDateString(undefined, {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric"
+                })}{" "}
+                {new Date(event.startTime).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}
                 {event.endTime &&
-                    " - " + new Date(event.endTime).toLocaleString()}
+                    `-${new Date(event.endTime).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    })}`}
             </p>
             {event.location && <p>📍 {event.location}</p>}
-            {event.price && <p>💰 ${event.price}</p>}
+            {event.price && event.price > 0 ? (
+                <p>💰 £{event.price.toFixed(2)}</p>
+            ) : (
+                <p>💰 Free</p>
+            )}
 
             {user ? (
                 !signedUp ? (

@@ -12,7 +12,9 @@ export function CreateEvent({
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
     const [location, setLocation] = useState("");
+    const [price, setPrice] = useState<number | "">("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
@@ -28,12 +30,21 @@ export function CreateEvent({
         setLoading(true);
         setMessage("");
         try {
-            await createEvent({ title, description, startTime, location });
+            await createEvent({
+                title,
+                description,
+                startTime,
+                endTime,
+                location,
+                price: price === "" ? 0 : Number(price)
+            });
             setMessage("✅ Event created successfully!");
             setTitle("");
             setDescription("");
             setStartTime("");
+            setEndTime("");
             setLocation("");
+            setPrice("");
 
             onEventCreated();
         } catch {
@@ -44,11 +55,7 @@ export function CreateEvent({
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="max-w-md mx-auto space-y-3"
-            aria-live="polite"
-        >
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-3">
             <h2 className="text-xl font-bold">Create Event</h2>
 
             <input
@@ -67,13 +74,26 @@ export function CreateEvent({
                 className="border p-2 w-full"
             />
 
-            <input
-                type="datetime-local"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                required
-                className="border p-2 w-full"
-            />
+            <label className="block">
+                <span className="text-sm text-gray-600">Start Time</span>
+                <input
+                    type="datetime-local"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    required
+                    className="border p-2 w-full"
+                />
+            </label>
+
+            <label className="block">
+                <span className="text-sm text-gray-600">End Time</span>
+                <input
+                    type="datetime-local"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    className="border p-2 w-full"
+                />
+            </label>
 
             <input
                 type="text"
@@ -83,21 +103,31 @@ export function CreateEvent({
                 className="border p-2 w-full"
             />
 
+            <input
+                type="number"
+                placeholder="Price (optional)"
+                value={price}
+                onChange={(e) =>
+                    setPrice(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                    )
+                }
+                className="border p-2 w-full"
+                min="0"
+                step="0.01"
+            />
+
             <button
                 type="submit"
+                className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
                 disabled={loading}
-                className={`px-3 py-2 rounded text-white ${
-                    loading
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-green-600 hover:bg-green-700"
-                }`}
             >
-                {loading ? "Creating..." : "Create"}
+                {loading ? "Creating..." : "Create Event"}
             </button>
 
             {message && (
                 <p
-                    className={`mt-2 font-medium ${
+                    className={`text-sm ${
                         message.startsWith("✅")
                             ? "text-green-600"
                             : "text-red-600"
