@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthProvider";
@@ -18,6 +19,7 @@ export default function App() {
                     </Routes>
                 </div>
             </Router>
+            <Toaster position="top-center" />
         </AuthProvider>
     );
 }
