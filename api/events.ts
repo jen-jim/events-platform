@@ -11,7 +11,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (req.method === "POST") {
-        // staff only
         const user = getUserFromReq(req);
         if (!user || user.role !== "staff")
             return res.status(403).json({ error: "Not authorized" });
@@ -34,6 +33,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: "Create event failed" });
+        }
+    }
+
+    if (req.method === "DELETE") {
+        const user = getUserFromReq(req);
+        if (!user || user.role !== "staff") {
+            return res.status(403).json({ error: "Not authorized" });
+        }
+
+        const id = req.query.id;
+        const eventId = Number(id);
+        if (!eventId || isNaN(eventId)) {
+            return res.status(400).json({ error: "Invalid event ID" });
+        }
+
+        try {
+            await prisma.event.delete({
+                where: { id: eventId }
+            });
+
+            return res
+                .status(200)
+                .json({ message: "Event deleted successfully" });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Failed to delete event" });
         }
     }
 

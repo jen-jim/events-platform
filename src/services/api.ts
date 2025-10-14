@@ -54,6 +54,15 @@ export async function createEvent(body: Partial<Event>) {
     return res.json();
 }
 
+export async function deleteEvent(eventId: number) {
+    const res = await fetch(`/api/events?id=${eventId}`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to delete event");
+    return res.json();
+}
+
 export async function signupForEvent(eventId: number, email: string) {
     const res = await fetch(`/api/events/${eventId}/signup`, {
         method: "POST",

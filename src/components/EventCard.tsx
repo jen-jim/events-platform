@@ -1,9 +1,15 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { type Event, signupForEvent } from "../services/api";
+import { deleteEvent, type Event, signupForEvent } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
 
-export function EventCard({ event }: { event: Event }) {
+export function EventCard({
+    event,
+    onDeleted
+}: {
+    event: Event;
+    onDeleted?: () => void;
+}) {
     const { user } = useContext(AuthContext);
     const [signedUp, setSignedUp] = useState(false);
 
@@ -22,6 +28,17 @@ export function EventCard({ event }: { event: Event }) {
         }
     }
 
+    async function handleDelete() {
+        if (!confirm("Are you sure you want to delete this event?")) return;
+        try {
+            await deleteEvent(event.id);
+            alert("Event deleted!");
+            onDeleted?.();
+        } catch {
+            alert("Failed to delete event");
+        }
+    }
+
     return (
         <div
             className="border rounded-lg shadow p-4 mb-4 flex flex-col gap-2"
@@ -29,6 +46,14 @@ export function EventCard({ event }: { event: Event }) {
             aria-label={`Event: ${event.title}`}
         >
             <h3 className="text-lg font-semibold">{event.title}</h3>
+            {user?.role === "staff" && (
+                <button
+                    onClick={handleDelete}
+                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                >
+                    Delete
+                </button>
+            )}
             <p>{event.description}</p>
             <p>
                 🕒{" "}
