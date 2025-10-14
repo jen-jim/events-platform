@@ -4,11 +4,10 @@ import prisma from "./lib/prisma.ts";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {
-        // return events from DB (paginated later)
         const events = await prisma.event.findMany({
             orderBy: { startTime: "asc" }
         });
-        return res.json({ events });
+        return res.status(200).json(events);
     }
 
     if (req.method === "POST") {
@@ -31,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     createdBy: user.id
                 }
             });
-            return res.status(201).json({ event });
+            return res.status(201).json(event);
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: "Create event failed" });
