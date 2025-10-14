@@ -8,13 +8,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { email, password, staffKey } = req.body as {
+    const { name, email, password, staffKey } = req.body as {
+        name?: string;
         email?: string;
         password?: string;
         staffKey?: string;
     };
 
-    if (!email || !password)
+    if (!name || !email || !password)
         return res.status(400).json({ error: "Missing fields" });
 
     try {
@@ -27,9 +28,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         let role = "user";
 
-        if (!staffKey) {
-            role = "user";
-        }
         if (staffKey) {
             if (staffKey !== process.env.STAFF_REG_KEY) {
                 return res.status(400).json({ error: "❌ Invalid staff key" });
@@ -39,7 +37,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const user = await prisma.user.create({
-            data: { email, password: hashed, role }
+            data: { name: name || "", email, password: hashed, role }
         });
 
         const token = signToken({
@@ -51,6 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         res.status(201).json({
             id: user.id,
+            name: user.name,
             email: user.email,
             role: user.role
         });

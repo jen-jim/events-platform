@@ -9,6 +9,7 @@ export interface Event {
 }
 
 export async function signUpUser(body: {
+    name: string;
     email: string;
     password: string;
     staffKey?: string;

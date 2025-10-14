@@ -27,7 +27,7 @@ export function Profile() {
 
     return (
         <div className="max-w-md mx-auto p-4 border rounded shadow">
-            <h2 className="text-xl font-bold mb-4">Your Profile</h2>
+            <h2 className="text-xl font-bold mb-4">{user.name || "No Name"}</h2>
             <p>
                 <strong>Email:</strong> {user.email}
             </p>

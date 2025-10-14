@@ -6,6 +6,7 @@ export function LoginRegister() {
     const { refreshUser } = useContext(AuthContext);
 
     const [isRegister, setIsRegister] = useState(false);
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,6 +27,7 @@ export function LoginRegister() {
                 }
 
                 const { role } = await signUpUser({
+                    name,
                     email,
                     password,
                     staffKey: staffKey || undefined
@@ -58,6 +60,16 @@ export function LoginRegister() {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-3">
+                {isRegister && (
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="border p-2 w-full"
+                    />
+                )}
                 <input
                     type="email"
                     placeholder="Email"

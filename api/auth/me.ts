@@ -10,6 +10,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         where: { id: userData.id },
         select: {
             id: true,
+            name: true,
             email: true,
             role: true,
             createdAt: true
