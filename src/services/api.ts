@@ -79,3 +79,22 @@ export async function getCurrentUser() {
     if (!res.ok) return null;
     return res.json();
 }
+
+export async function updateUserProfile(body: {
+    name?: string;
+    email?: string;
+    password?: string;
+}) {
+    const res = await fetch("/api/auth/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to update profile");
+    }
+
+    return res.json();
+}
