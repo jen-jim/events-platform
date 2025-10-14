@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { updateUserProfile } from "../services/api";
@@ -12,13 +12,9 @@ export function Profile() {
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
-
-    useEffect(() => {
-        refreshUser().finally(() => setLoading(false));
-    }, [refreshUser]);
 
     if (loading) return <p>Loading profile...</p>;
 
@@ -62,11 +58,14 @@ export function Profile() {
             });
 
             await refreshUser();
-            setEditName(false);
-            setEditEmail(false);
-            setEditPassword(false);
-            setPassword("");
-            setConfirmPassword("");
+
+            if (editName) setEditName(false);
+            if (editEmail) setEditEmail(false);
+            if (editPassword) {
+                setEditPassword(false);
+                setPassword("");
+                setConfirmPassword("");
+            }
             setMessage("✅ Profile updated successfully!");
         } catch (err) {
             if (err instanceof Error) {
