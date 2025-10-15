@@ -6,9 +6,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {
         const events = await prisma.event.findMany({
             orderBy: { startTime: "asc" },
-            include: { Signup: true }
+            include: {
+                Signup: {
+                    select: {
+                        id: true,
+                        userEmail: true,
+                        eventId: true,
+                        user: { select: { name: true } }
+                    }
+                }
+            }
         });
-        return res.status(200).json(events);
+
+        const eventsWithSignups = await Promise.all(
+            events.map(async (event) => {
+                const signupsWithNames = await Promise.all(
+                    event.Signup.map(async (s) => {
+                        const user = await prisma.user.findUnique({
+                            where: { email: s.userEmail }
+                        });
+                        return {
+                            email: s.userEmail,
+                            name: user?.name || "Unknown"
+                        };
+                    })
+                );
+                return { ...event, signups: signupsWithNames };
+            })
+        );
+
+        return res.status(200).json(eventsWithSignups);
     }
 
     if (req.method === "POST") {

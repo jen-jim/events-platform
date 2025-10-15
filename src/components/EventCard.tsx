@@ -25,6 +25,7 @@ export function EventCard({
         : false;
 
     const [signedUp, setSignedUp] = useState(alreadySignedUp);
+    const [showSignups, setShowSignups] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState(event.title);
     const [description, setDescription] = useState(event.description || "");
@@ -190,6 +191,15 @@ export function EventCard({
                 ) : (
                     <p className="text-gray-500 italic">Log in to sign up</p>
                 )}
+
+                {user?.role === "staff" && (
+                    <button
+                        onClick={() => setShowSignups(true)}
+                        className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700"
+                    >
+                        View Signups
+                    </button>
+                )}
             </div>
 
             {showModal &&
@@ -281,6 +291,34 @@ export function EventCard({
                                     </button>
                                 </div>
                             </form>
+                        </div>
+                    </div>,
+                    document.body
+                )}
+
+            {showSignups &&
+                ReactDOM.createPortal(
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="bg-white p-6 rounded-lg w-96 relative">
+                            <h4 className="text-lg font-bold mb-3">
+                                Signed Up Users
+                            </h4>
+                            <button
+                                className="absolute top-2 right-2 text-red-600 font-bold"
+                                onClick={() => setShowSignups(false)}
+                            >
+                                ✕
+                            </button>
+                            <ul className="space-y-1">
+                                {event.Signup?.map((s) => (
+                                    <li key={s.id}>
+                                        {s.user?.name} ({s.userEmail})
+                                    </li>
+                                ))}
+                                {!event.Signup?.length && (
+                                    <li>No signups yet.</li>
+                                )}
+                            </ul>
                         </div>
                     </div>,
                     document.body

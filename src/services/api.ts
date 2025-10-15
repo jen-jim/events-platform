@@ -6,7 +6,12 @@ export interface Event {
     endTime?: string;
     location?: string;
     price?: number;
-    Signup: { id: number; userEmail: string; eventId: number }[];
+    Signup: {
+        id: number;
+        userEmail: string;
+        eventId: number;
+        user?: { name: string };
+    }[];
 }
 
 export async function signUpUser(body: {

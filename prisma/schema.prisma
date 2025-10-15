@@ -21,6 +21,7 @@ model User {
   role      String   @default("user") // "user" or "staff"
   createdAt DateTime @default(now())
   Event     Event[]
+  Signup    Signup[]
 }
 
 model Event {
@@ -32,7 +33,7 @@ model Event {
   location    String?
   price       Float?    @default(0)
   createdBy   Int?
-  creator     User?      @relation(fields: [createdBy], references: [id])
+  creator     User?     @relation(fields: [createdBy], references: [id])
   createdAt   DateTime  @default(now())
   Signup      Signup[]
 }
@@ -42,6 +43,7 @@ model Signup {
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId   Int
   userEmail String
+  user      User?    @relation(fields: [userEmail], references: [email])
   createdAt DateTime @default(now())
 
   @@unique([eventId, userEmail])
