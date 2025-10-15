@@ -172,12 +172,6 @@ export function EventCard({
                     ) : (
                         <>
                             <p className="text-gray-500 italic">Signed up!</p>
-                            <button
-                                onClick={handleCancelSignup}
-                                className="bg-red-600 ..."
-                            >
-                                Cancel Signup
-                            </button>
                             <a
                                 href={gcalUrl(event)}
                                 target="_blank"
@@ -186,6 +180,12 @@ export function EventCard({
                             >
                                 ➕ Add to Google Calendar
                             </a>
+                            <button
+                                onClick={handleCancelSignup}
+                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                            >
+                                Cancel Signup
+                            </button>
                         </>
                     )
                 ) : (
