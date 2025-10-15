@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import {
+    cancelSignupForEvent,
     deleteEvent,
     type Event,
     signupForEvent,
@@ -46,6 +47,17 @@ export function EventCard({
             toast.success("Signed up!");
         } catch {
             toast.error("Signup failed");
+        }
+    }
+
+    async function handleCancelSignup() {
+        if (!user) return;
+        try {
+            await cancelSignupForEvent(event.id, user.email);
+            setSignedUp(false);
+            toast.success("Signup cancelled!");
+        } catch {
+            toast.error("Failed to cancel signup");
         }
     }
 
@@ -159,6 +171,12 @@ export function EventCard({
                     ) : (
                         <>
                             <p className="text-gray-500 italic">Signed up!</p>
+                            <button
+                                onClick={handleCancelSignup}
+                                className="bg-red-600 ..."
+                            >
+                                Cancel Signup
+                            </button>
                             <a
                                 href={gcalUrl(event)}
                                 target="_blank"

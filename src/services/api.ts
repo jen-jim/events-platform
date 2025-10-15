@@ -61,13 +61,15 @@ export async function updateUserProfile(body: {
         const data = await res.json();
         throw new Error(data.error || "Failed to update profile");
     }
-
     return res.json();
 }
 
 export async function fetchEvents(): Promise<Event[]> {
     const res = await fetch("/api/events");
-    if (!res.ok) throw new Error("Failed to fetch events");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to fetch events");
+    }
     return res.json();
 }
 
@@ -77,7 +79,10 @@ export async function createEvent(body: Partial<Event>) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
-    if (!res.ok) throw new Error("Failed to create event");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to create event");
+    }
     return res.json();
 }
 
@@ -87,7 +92,23 @@ export async function signupForEvent(eventId: number, email: string) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
     });
-    if (!res.ok) throw new Error("Signup failed");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Signup failed");
+    }
+    return res.json();
+}
+
+export async function cancelSignupForEvent(eventId: number, email: string) {
+    const res = await fetch(`/api/events/${eventId}/cancel`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+    });
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to cancel signup");
+    }
     return res.json();
 }
 
@@ -99,10 +120,9 @@ export async function updateEvent(eventId: number, data: Partial<Event>) {
     });
 
     if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to update event");
+        const data = await res.json();
+        throw new Error(data.error || "Failed to update event");
     }
-
     return res.json();
 }
 
@@ -111,6 +131,9 @@ export async function deleteEvent(eventId: number) {
         method: "DELETE",
         credentials: "include"
     });
-    if (!res.ok) throw new Error("Failed to delete event");
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to delete event");
+    }
     return res.json();
 }
