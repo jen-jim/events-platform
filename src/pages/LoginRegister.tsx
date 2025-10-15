@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { loginUser, signUpUser } from "../services/api";
 
@@ -13,6 +14,7 @@ export function LoginRegister() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [staffKey, setStaffKey] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -44,6 +46,7 @@ export function LoginRegister() {
             setConfirmPassword("");
             setStaffKey("");
             await refreshUser();
+            navigate("/");
         } catch (err: unknown) {
             if (err instanceof Error) toast.error(err.message);
             else toast.error("Something went wrong.");
