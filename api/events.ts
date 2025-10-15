@@ -62,5 +62,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
     }
 
+    if (req.method === "PUT") {
+        const user = getUserFromReq(req);
+        if (!user || user.role !== "staff")
+            return res.status(403).json({ error: "Not authorized" });
+
+        const { id, title, description, startTime, endTime, location, price } =
+            req.body;
+
+        if (!id) {
+            return res.status(400).json({ error: "Event ID required" });
+        }
+
+        try {
+            const updatedEvent = await prisma.event.update({
+                where: { id: Number(id) },
+                data: {
+                    ...(title && { title }),
+                    ...(description && { description }),
+                    ...(startTime && { startTime: new Date(startTime) }),
+                    ...(endTime && { endTime: new Date(endTime) }),
+                    ...(location && { location }),
+                    ...(price !== undefined && { price: Number(price) })
+                }
+            });
+
+            return res.status(200).json(updatedEvent);
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Failed to update event" });
+        }
+    }
+
     return res.status(405).send("Method Not Allowed").end();
 }
