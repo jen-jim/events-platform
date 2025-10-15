@@ -43,4 +43,6 @@ model Signup {
   eventId   Int
   userEmail String
   createdAt DateTime @default(now())
+
+  @@unique([eventId, userEmail])
 }

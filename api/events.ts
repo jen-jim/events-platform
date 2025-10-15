@@ -5,7 +5,8 @@ import prisma from "./lib/prisma.ts";
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {
         const events = await prisma.event.findMany({
-            orderBy: { startTime: "asc" }
+            orderBy: { startTime: "asc" },
+            include: { Signup: true }
         });
         return res.status(200).json(events);
     }

@@ -18,7 +18,12 @@ export function EventCard({
     setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
 }) {
     const { user } = useContext(AuthContext);
-    const [signedUp, setSignedUp] = useState(false);
+
+    const alreadySignedUp = user
+        ? event.Signup.some((s) => s.userEmail === user.email)
+        : false;
+
+    const [signedUp, setSignedUp] = useState(alreadySignedUp);
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState(event.title);
     const [description, setDescription] = useState(event.description || "");
@@ -152,14 +157,17 @@ export function EventCard({
                             Sign Up
                         </button>
                     ) : (
-                        <a
-                            href={gcalUrl(event)}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-blue-600 underline"
-                        >
-                            ➕ Add to Google Calendar
-                        </a>
+                        <>
+                            <p className="text-gray-500 italic">Signed up!</p>
+                            <a
+                                href={gcalUrl(event)}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-blue-600 underline"
+                            >
+                                ➕ Add to Google Calendar
+                            </a>
+                        </>
                     )
                 ) : (
                     <p className="text-gray-500 italic">Log in to sign up</p>

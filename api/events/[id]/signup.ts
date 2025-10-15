@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import prisma from "../../lib/prisma.ts";
 
@@ -13,8 +14,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             data: { eventId: parseInt(id as string, 10), userEmail: email }
         });
         return res.status(201).json({ ok: true, signup });
-    } catch (err) {
-        console.error(err);
+    } catch (err: unknown) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
+            if (err.code === "P2002") {
+                return res.status(400).json({
+                    error: "You have already signed up for this event"
+                });
+            }
+        }
         res.status(500).json({ error: "Signup failed" });
     }
 }
