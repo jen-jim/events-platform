@@ -3,6 +3,7 @@
     top: 0;
     z-index: 1000;
     background-color: var(--color-primary);
+    border-bottom: 2px solid var(--color-accent);
     box-shadow: var(--shadow);
 }
 
@@ -10,11 +11,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: auto;
     padding: 1rem 2rem;
-    background-color: var(--color-primary);
     color: var(--color-secondary);
-    border-bottom: 2px solid var(--color-accent);
-    box-shadow: var(--shadow);
+    max-width: 1200px;
 }
 
 .navbar-left {

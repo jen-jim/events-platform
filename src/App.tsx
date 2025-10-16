@@ -11,13 +11,13 @@ export default function App() {
         <AuthProvider>
             <Router>
                 <Navbar />
-                <div className="p-4 max-w-2xl mx-auto">
+                <main className="app-content">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/auth" element={<LoginRegister />} />
                         <Route path="/profile" element={<Profile />} />
                     </Routes>
-                </div>
+                </main>
             </Router>
             <Toaster position="top-center" />
         </AuthProvider>
