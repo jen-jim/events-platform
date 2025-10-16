@@ -14,9 +14,6 @@ export function Navbar() {
                     <Link to="/" className="navbar-logo">
                         The Cupping Room <Coffee className="navbar-logo-icon" />
                     </Link>
-                    <p className="navbar-tagline">
-                        Brewed experiences, shared together
-                    </p>
                 </div>
 
                 <div className="navbar-links">
