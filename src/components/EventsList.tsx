@@ -1,5 +1,6 @@
 import { type Event } from "../services/api";
 import { EventCard } from "./EventCard";
+import "./EventsList.css";
 
 export function EventsList({
     events,
@@ -8,14 +9,22 @@ export function EventsList({
     events: Event[];
     setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
 }) {
-    if (!events.length) return <p>No events yet.</p>;
-
     return (
-        <div>
-            <h2 className="text-2xl mb-4 font-bold">Upcoming Events</h2>
-            {events.map((event) => (
-                <EventCard key={event.id} event={event} setEvents={setEvents} />
-            ))}
+        <div className="events-list">
+            <h2 className="events-title">Upcoming Events</h2>
+            {events.length > 0 ? (
+                events.map((event) => (
+                    <EventCard
+                        key={event.id}
+                        event={event}
+                        setEvents={setEvents}
+                    />
+                ))
+            ) : (
+                <p className="events-empty">
+                    No upcoming events yet — check back soon!
+                </p>
+            )}
         </div>
     );
 }
