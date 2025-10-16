@@ -107,7 +107,7 @@ export function Profile() {
 
     return (
         <div className="profile-card">
-            <h2 className="profile-title">Your Profile</h2>
+            <h2 className="profile-title">Profile</h2>
 
             <div className="profile-fields">
                 <EditableField

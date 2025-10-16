@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import type { User } from "../contexts/AuthContext";
 import { cancelSignupForEvent, fetchEvents, type Event } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
+import "./ProfileEvents.css";
 
 export function ProfileEvents({ user }: { user: User }) {
     const [events, setEvents] = useState<Event[]>([]);
@@ -42,21 +43,26 @@ export function ProfileEvents({ user }: { user: User }) {
     }
 
     return (
-        <div>
-            <h2 className="text-2xl font-bold mb-4">My Events</h2>
+        <div className="profile-events">
+            <h2>Events</h2>
+
             {!events.length ? (
-                <p>You have not signed up for any events yet.</p>
+                <p className="no-events">
+                    You have not signed up for any events yet.
+                </p>
             ) : (
                 events.map((event) => (
-                    <div key={event.id} className="border rounded p-4 mb-3">
-                        <h3 className="text-lg font-semibold">{event.title}</h3>
+                    <div key={event.id} className="event-card">
+                        <h3>{event.title}</h3>
+
                         {event.description && (
-                            <p className="flex items-center gap-2 text-gray-600 italic">
+                            <p className="event-description">
                                 {event.description}
                             </p>
                         )}
-                        <p className="flex items-center gap-2 text-gray-600">
-                            <Clock className="w-4 h-4 text-primary" />{" "}
+
+                        <p className="event-info">
+                            <Clock className="icon" />{" "}
                             {new Date(event.startTime).toLocaleDateString(
                                 undefined,
                                 {
@@ -70,43 +76,40 @@ export function ProfileEvents({ user }: { user: User }) {
                                 minute: "2-digit"
                             })}
                             {event.endTime &&
-                                `-${new Date(event.endTime).toLocaleTimeString(
-                                    [],
-                                    {
-                                        hour: "2-digit",
-                                        minute: "2-digit"
-                                    }
-                                )}`}
+                                ` - ${new Date(
+                                    event.endTime
+                                ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                })}`}
                         </p>
+
                         {event.location && (
-                            <p className="flex items-center gap-2 text-gray-600">
-                                <MapPin className="w-4 h-4 text-primary" />{" "}
-                                {event.location}
+                            <p className="event-info">
+                                <MapPin className="icon" /> {event.location}
                             </p>
                         )}
-                        {event.price && event.price > 0 ? (
-                            <p className="flex items-center gap-2 text-gray-600">
-                                <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
-                                £{event.price.toFixed(2)}
-                            </p>
-                        ) : (
-                            <p className="flex items-center gap-2 text-gray-600">
-                                <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
-                                Free
-                            </p>
-                        )}
+
+                        <p className="event-info">
+                            <ReceiptPoundSterling className="icon" />{" "}
+                            {event.price && event.price > 0
+                                ? `£${event.price.toFixed(2)}`
+                                : "Free"}
+                        </p>
+
                         <a
                             href={gcalUrl(event)}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-2 text-accent hover:underline"
+                            className="gcal-link"
                         >
-                            <CalendarPlus className="w-4 h-4 text-primary" />{" "}
-                            Add to Google Calendar
+                            <CalendarPlus className="icon" /> Add to Google
+                            Calendar
                         </a>
+
                         <button
                             onClick={() => handleCancelSignup(event.id)}
-                            className="ml-4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
+                            className="cancel-button"
                         >
                             Cancel Signup
                         </button>
