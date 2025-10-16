@@ -5,6 +5,7 @@ import { CreateEvent } from "../components/CreateEvent";
 import { EventsList } from "../components/EventsList";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchEvents, type Event } from "../services/api";
+import "./Home.css";
 
 export function Home() {
     const { user } = useContext(AuthContext);
@@ -39,25 +40,31 @@ export function Home() {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-        <div className="space-y-6">
-            <h1 className="text-3xl font-bold mb-4">Events</h1>
+        <div className="home-page">
             {user?.role === "staff" && (
                 <button
+                    className="create-event-btn"
                     onClick={() => setShowModal(true)}
-                    className="flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                 >
-                    <Plus className="w-4 h-4" /> Create New Event
+                    <Plus className="icon" /> Create New Event
                 </button>
             )}
+
             <EventsList events={events} setEvents={setEvents} />
 
             {showModal &&
                 ReactDOM.createPortal(
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg relative">
+                    <div
+                        className="modal-overlay"
+                        onClick={() => setShowModal(false)}
+                    >
+                        <div
+                            className="modal-content"
+                            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+                        >
                             <button
+                                className="modal-close-btn"
                                 onClick={() => setShowModal(false)}
-                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                             >
                                 <X />
                             </button>
