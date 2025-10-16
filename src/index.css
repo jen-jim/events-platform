@@ -44,6 +44,12 @@ a:hover {
     text-decoration: underline;
 }
 
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .button-primary {
     background-color: var(--color-primary);
     color: var(--color-secondary);
