@@ -1,0 +1,58 @@
+.editable-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.editable-field label {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.view-mode {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-mode p {
+    margin: 0;
+}
+
+.edit-mode {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-mode input {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-accent);
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-success {
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.icon-error {
+    color: var(--color-accent);
+    cursor: pointer;
+}
+
+.icon-edit {
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.icon-edit:hover {
+    color: var(--color-accent);
+}

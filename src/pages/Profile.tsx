@@ -2,10 +2,10 @@ import { Check, Pencil, X } from "lucide-react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { EditableField } from "../components/EditableField";
 import { ProfileEvents } from "../components/ProfileEvents";
 import { AuthContext } from "../contexts/AuthContext";
 import { updateUserProfile } from "../services/api";
-import { EditableField } from "../utils/EditableField";
 import "./Profile.css";
 
 export function Profile() {

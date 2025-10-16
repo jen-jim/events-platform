@@ -1,4 +1,5 @@
 import { Check, Pencil, X } from "lucide-react";
+import "./EditableField.css";
 
 export function EditableField({
     label,
@@ -24,31 +25,29 @@ export function EditableField({
     loading: boolean;
 }) {
     return (
-        <div>
-            <label className="block text-gray-700 font-medium">{label}</label>
+        <div className="editable-field">
+            <label>{label}</label>
             {editingField === field ? (
-                <div className="flex gap-2 items-center">
+                <div className="edit-mode">
                     <input
                         type={field === "email" ? "email" : "text"}
-                        className="border p-2 rounded flex-1"
                         value={tempValue}
                         onChange={(e) => setTempValue(e.target.value)}
                     />
-                    <button onClick={handleSave} disabled={loading}>
-                        <Check className="text-green-600 hover:text-green-800" />
-                    </button>
-                    <button onClick={cancelEdit}>
-                        <X className="text-red-600 hover:text-red-800" />
-                    </button>
+                    <div className="edit-buttons">
+                        <button onClick={handleSave} disabled={loading}>
+                            <Check className="icon-success" />
+                        </button>
+                        <button onClick={cancelEdit}>
+                            <X className="icon-error" />
+                        </button>
+                    </div>
                 </div>
             ) : (
-                <div className="flex justify-between items-center">
+                <div className="view-mode">
                     <p>{value}</p>
                     <button onClick={() => handleEdit(field)}>
-                        <Pencil
-                            className="text-gray-500 hover:text-gray-700"
-                            size={18}
-                        />
+                        <Pencil className="icon-edit" />
                     </button>
                 </div>
             )}
