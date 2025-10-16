@@ -1,3 +1,4 @@
+import { Plus, X } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { CreateEvent } from "../components/CreateEvent";
@@ -43,9 +44,9 @@ export function Home() {
             {user?.role === "staff" && (
                 <button
                     onClick={() => setShowModal(true)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    className="flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                 >
-                    + Create Event
+                    <Plus className="w-4 h-4" /> Create New Event
                 </button>
             )}
             <EventsList events={events} setEvents={setEvents} />
@@ -58,7 +59,7 @@ export function Home() {
                                 onClick={() => setShowModal(false)}
                                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                             >
-                                ✕
+                                <X />
                             </button>
                             <CreateEvent onEventCreated={handleCreated} />
                         </div>
