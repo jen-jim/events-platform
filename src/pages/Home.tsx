@@ -1,14 +1,11 @@
-import { Plus } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateEvent } from "../components/CreateEvent";
 import { EventsList } from "../components/EventsList";
 import { Modal } from "../components/Modal";
-import { AuthContext } from "../contexts/AuthContext";
 import { fetchEvents, type Event } from "../services/api";
 import "./Home.css";
 
 export function Home() {
-    const { user } = useContext(AuthContext);
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -41,16 +38,11 @@ export function Home() {
 
     return (
         <div className="home-page">
-            {user?.role === "staff" && (
-                <button
-                    className="create-event-btn"
-                    onClick={() => setShowModal(true)}
-                >
-                    <Plus className="icon" /> Create New Event
-                </button>
-            )}
-
-            <EventsList events={events} setEvents={setEvents} />
+            <EventsList
+                events={events}
+                setEvents={setEvents}
+                setShowModal={setShowModal}
+            />
 
             {showModal && (
                 <Modal closeModal={() => setShowModal(false)}>
