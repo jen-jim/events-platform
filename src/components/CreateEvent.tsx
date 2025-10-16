@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { createEvent } from "../services/api";
+import "./CreateEvent.css";
 
 export function CreateEvent({
     onEventCreated
@@ -47,45 +48,48 @@ export function CreateEvent({
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="space-y-3 border p-4 rounded-lg"
-        >
-            <h3 className="font-semibold text-lg">Create New Event</h3>
+        <form onSubmit={handleSubmit} className="create-event-form">
+            <h3 className="form-title">Create New Event</h3>
+
             <input
                 type="text"
                 placeholder="Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="border p-2 w-full"
+                className="form-input"
             />
+
             <textarea
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="border p-2 w-full"
+                className="form-textarea"
             />
+
             <input
                 type="datetime-local"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="border p-2 w-full"
+                className="form-input"
             />
+
             <input
                 type="datetime-local"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="border p-2 w-full"
+                className="form-input"
             />
+
             <input
                 type="text"
                 placeholder="Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="border p-2 w-full"
+                className="form-input"
             />
+
             <input
                 type="number"
                 placeholder="Price (£)"
@@ -95,12 +99,13 @@ export function CreateEvent({
                         e.target.value === "" ? "" : Number(e.target.value)
                     )
                 }
-                className="border p-2 w-full"
+                className="form-input"
             />
+
             <button
                 type="submit"
                 disabled={loading}
-                className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700"
+                className="form-submit-btn"
             >
                 {loading ? "Creating..." : "Create Event"}
             </button>
