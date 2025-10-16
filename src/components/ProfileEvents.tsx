@@ -52,17 +52,17 @@ export function ProfileEvents({ user }: { user: User }) {
                 </p>
             ) : (
                 events.map((event) => (
-                    <div key={event.id} className="event-card">
-                        <h3>{event.title}</h3>
+                    <div key={event.id} className="profile-event-card">
+                        <h3 className="profile-event-title">{event.title}</h3>
 
                         {event.description && (
-                            <p className="event-description">
+                            <p className="profile-event-description">
                                 {event.description}
                             </p>
                         )}
 
-                        <p className="event-info">
-                            <Clock className="icon" />{" "}
+                        <p className="profile-event-info">
+                            <Clock className="profile-icon" />{" "}
                             {new Date(event.startTime).toLocaleDateString(
                                 undefined,
                                 {
@@ -85,13 +85,14 @@ export function ProfileEvents({ user }: { user: User }) {
                         </p>
 
                         {event.location && (
-                            <p className="event-info">
-                                <MapPin className="icon" /> {event.location}
+                            <p className="profile-event-info">
+                                <MapPin className="profile-icon" />{" "}
+                                {event.location}
                             </p>
                         )}
 
-                        <p className="event-info">
-                            <ReceiptPoundSterling className="icon" />{" "}
+                        <p className="profile-event-info">
+                            <ReceiptPoundSterling className="profile-icon" />{" "}
                             {event.price && event.price > 0
                                 ? `£${event.price.toFixed(2)}`
                                 : "Free"}
@@ -101,15 +102,15 @@ export function ProfileEvents({ user }: { user: User }) {
                             href={gcalUrl(event)}
                             target="_blank"
                             rel="noreferrer"
-                            className="gcal-link"
+                            className="profile-gcal-link"
                         >
-                            <CalendarPlus className="icon" /> Add to Google
-                            Calendar
+                            <CalendarPlus className="profile-icon" /> Add to
+                            Google Calendar
                         </a>
 
                         <button
                             onClick={() => handleCancelSignup(event.id)}
-                            className="cancel-button"
+                            className="profile-cancel-btn"
                         >
                             Cancel Signup
                         </button>
