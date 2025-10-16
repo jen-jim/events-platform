@@ -11,7 +11,7 @@
     max-width: 400px;
     padding: 2.5rem 2rem;
     border-radius: var(--radius);
-    background-color: var(--color-secondary);
+    background-color: var(--color-white);
     box-shadow: var(--shadow);
     border: 1px solid rgba(0, 0, 0, 0.05);
     font-family: var(--font-body);
@@ -20,7 +20,7 @@
 
 .auth-container:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-hover);
 }
 
 .auth-title {
