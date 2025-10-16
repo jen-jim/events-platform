@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Event } from "../services/api";
+import { FormInput } from "./FormInput";
 import { Modal } from "./Modal";
 
 export function EditEventModal({
@@ -40,53 +41,47 @@ export function EditEventModal({
                 }}
                 className="flex flex-col gap-3"
             >
-                <input
-                    type="text"
+                <FormInput
+                    label="Title"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="border p-2 rounded"
-                    placeholder="Title"
+                    onChange={(value) => setTitle(value)}
                     required
                 />
 
-                <textarea
+                <FormInput
+                    label="Description"
+                    type="textarea"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="border p-2 rounded"
-                    rows={3}
-                    placeholder="Description"
+                    onChange={(value) => setDescription(value)}
                 />
 
-                <div className="flex gap-2">
-                    <input
+                <div className="form-input-row">
+                    <FormInput
+                        label="Start Time"
                         type="datetime-local"
                         value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                        className="border p-2 rounded w-1/2"
+                        onChange={(value) => setStartTime(value)}
                         required
                     />
-                    <input
+                    <FormInput
+                        label="End Time"
                         type="datetime-local"
                         value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                        className="border p-2 rounded w-1/2"
+                        onChange={(value) => setEndTime(value)}
                     />
                 </div>
 
-                <input
-                    type="text"
+                <FormInput
+                    label="Location"
                     value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="border p-2 rounded"
-                    placeholder="Location"
+                    onChange={(value) => setLocation(value)}
                 />
 
-                <input
+                <FormInput
+                    label="Price (£)"
                     type="number"
                     value={price}
-                    onChange={(e) => setPrice(parseFloat(e.target.value))}
-                    className="border p-2 rounded"
-                    placeholder="Price (£)"
+                    onChange={(value) => setPrice(parseFloat(value))}
                     min="0"
                     step="0.01"
                 />

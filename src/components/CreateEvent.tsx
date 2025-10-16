@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { createEvent } from "../services/api";
 import "./CreateEvent.css";
+import { FormInput } from "./FormInput";
 
 export function CreateEvent({
     onEventCreated
@@ -15,7 +16,7 @@ export function CreateEvent({
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [location, setLocation] = useState("");
-    const [price, setPrice] = useState<number | "">("");
+    const [price, setPrice] = useState(0);
     const [loading, setLoading] = useState(false);
 
     if (!user || user.role !== "staff") return null;
@@ -30,14 +31,14 @@ export function CreateEvent({
                 startTime,
                 endTime,
                 location,
-                price: price === "" ? 0 : Number(price)
+                price
             });
             setTitle("");
             setDescription("");
             setStartTime("");
             setEndTime("");
             setLocation("");
-            setPrice("");
+            setPrice(0);
             toast.success("Event created!");
             onEventCreated?.();
         } catch {
@@ -51,55 +52,50 @@ export function CreateEvent({
         <form onSubmit={handleSubmit} className="create-event-form">
             <h3 className="form-title">Create New Event</h3>
 
-            <input
-                type="text"
-                placeholder="Title"
+            <FormInput
+                label="Title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(value) => setTitle(value)}
                 required
-                className="form-input"
             />
 
-            <textarea
-                placeholder="Description"
+            <FormInput
+                label="Description"
+                type="textarea"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="form-textarea"
+                onChange={(value) => setDescription(value)}
             />
 
-            <input
-                type="datetime-local"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                required
-                className="form-input"
-            />
+            <div className="form-input-row">
+                <FormInput
+                    label="Start Time"
+                    type="datetime-local"
+                    value={startTime}
+                    onChange={(value) => setStartTime(value)}
+                    required
+                />
+                <FormInput
+                    label="End Time"
+                    type="datetime-local"
+                    value={endTime}
+                    onChange={(value) => setEndTime(value)}
+                />
+            </div>
 
-            <input
-                type="datetime-local"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                className="form-input"
-            />
-
-            <input
-                type="text"
-                placeholder="Location"
+            <FormInput
+                label="Location"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="form-input"
+                onChange={(value) => setLocation(value)}
             />
 
-            <input
+            <FormInput
+                label="Price (£)"
                 type="number"
-                placeholder="Price (£)"
+                placeholder="0.00"
                 value={price}
-                onChange={(e) =>
-                    setPrice(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                    )
-                }
-                className="form-input"
+                onChange={(value) => setPrice(parseFloat(value))}
+                min="0"
+                step="0.01"
             />
 
             <button
