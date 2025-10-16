@@ -18,6 +18,7 @@ import {
 } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
 import { EditEventModal } from "./EditEventModal";
+import "./EventCard.css";
 import { SignupsModal } from "./SignupsModal";
 
 export function EventCard({
@@ -120,36 +121,38 @@ export function EventCard({
     return (
         <>
             <div
-                className="border rounded-lg shadow p-4 mb-4 flex flex-col gap-2"
+                className="event-card"
                 role="group"
                 aria-label={`Event: ${event.title}`}
             >
-                <h3 className="text-lg font-semibold">{event.title}</h3>
+                <div className="event-header">
+                    <h3 className="event-title">{event.title}</h3>
+                    {user?.role === "staff" && (
+                        <div className="event-actions">
+                            <button
+                                onClick={() => setShowEditEvent(true)}
+                                className="btn-icon btn-edit"
+                                aria-label={`Edit event: ${event.title}`}
+                            >
+                                <Pencil />
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="btn-icon btn-delete"
+                                aria-label={`Delete event: ${event.title}`}
+                            >
+                                <Trash2 />
+                            </button>
+                        </div>
+                    )}
+                </div>
 
-                {user?.role === "staff" && (
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => setShowEditEvent(true)}
-                            className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                            aria-label={`Edit event: ${event.title}`}
-                        >
-                            <Pencil />
-                        </button>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                            aria-label={`Delete event: ${event.title}`}
-                        >
-                            <Trash2 />
-                        </button>
-                    </div>
+                {event.description && (
+                    <p className="event-description">{event.description}</p>
                 )}
 
-                <p className="flex items-center gap-2 text-gray-600 italic">
-                    {event.description}
-                </p>
-                <p className="flex items-center gap-2 text-gray-600">
-                    <Clock className="w-4 h-4 text-primary" />{" "}
+                <p className="event-detail">
+                    <Clock className="icon" />
                     {new Date(event.startTime).toLocaleDateString(undefined, {
                         weekday: "short",
                         month: "short",
@@ -160,69 +163,70 @@ export function EventCard({
                         minute: "2-digit"
                     })}
                     {event.endTime &&
-                        `-${new Date(event.endTime).toLocaleTimeString([], {
+                        ` - ${new Date(event.endTime).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit"
                         })}`}
                 </p>
+
                 {event.location && (
-                    <p className="flex items-center gap-2 text-gray-600">
-                        <MapPin className="w-4 h-4 text-primary" />{" "}
-                        {event.location}
-                    </p>
-                )}
-                {event.price && event.price > 0 ? (
-                    <p className="flex items-center gap-2 text-gray-600">
-                        <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
-                        £{event.price.toFixed(2)}
-                    </p>
-                ) : (
-                    <p className="flex items-center gap-2 text-gray-600">
-                        <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
-                        Free
+                    <p className="event-detail">
+                        <MapPin className="icon" /> {event.location}
                     </p>
                 )}
 
-                {user ? (
-                    !signedUp ? (
+                <p className="event-detail">
+                    <ReceiptPoundSterling className="icon" />{" "}
+                    {event.price && event.price > 0
+                        ? `£${event.price.toFixed(2)}`
+                        : "Free"}
+                </p>
+
+                {user && signedUp && (
+                    <>
+                        <p className="event-status">Signed up!</p>
+                        <a
+                            href={gcalUrl(event)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="event-link"
+                        >
+                            <CalendarPlus className="icon" /> Add to Google
+                            Calendar
+                        </a>
+                    </>
+                )}
+
+                {!user && <p className="event-status">Log in to sign up</p>}
+
+                <div className="event-footer">
+                    {user && !signedUp && (
                         <button
                             onClick={handleSignup}
-                            className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                            className="btn-secondary"
                         >
                             Sign Up
                         </button>
-                    ) : (
-                        <>
-                            <p className="text-gray-500 italic">Signed up!</p>
-                            <a
-                                href={gcalUrl(event)}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex items-center gap-2 text-accent hover:underline"
-                            >
-                                <CalendarPlus className="w-4 h-4 text-primary" />{" "}
-                                Add to Google Calendar
-                            </a>
-                            <button
-                                onClick={handleCancelSignup}
-                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                            >
-                                Cancel Signup
-                            </button>
-                        </>
-                    )
-                ) : (
-                    <p className="text-gray-500 italic">Log in to sign up</p>
-                )}
+                    )}
 
-                {user?.role === "staff" && (
-                    <button
-                        onClick={() => setShowSignups(true)}
-                        className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700"
-                    >
-                        View Signups
-                    </button>
-                )}
+                    {user && signedUp && (
+                        <button
+                            onClick={handleCancelSignup}
+                            className="btn-secondary"
+                        >
+                            Cancel Signup
+                        </button>
+                    )}
+
+                    {user?.role === "staff" && (
+                        <button
+                            onClick={() => setShowSignups(true)}
+                            className="btn-signups"
+                        >
+                            View Signups
+                        </button>
+                    )}
+                </div>
             </div>
 
             {showEditEvent && (
