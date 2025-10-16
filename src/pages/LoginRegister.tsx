@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FormInput } from "../components/FormInput";
 import { AuthContext } from "../contexts/AuthContext";
 import { loginUser, signUpUser } from "../services/api";
 import "./LoginRegister.css";
@@ -65,55 +66,47 @@ export function LoginRegister() {
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     {isRegister && (
-                        <input
-                            type="text"
-                            placeholder="Name"
+                        <FormInput
+                            label="Name"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(value) => setName(value)}
                             required
-                            className="auth-input"
                         />
                     )}
-                    <input
+                    <FormInput
+                        label="Email"
                         type="email"
-                        placeholder="Email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(value) => setEmail(value)}
                         required
-                        className="auth-input"
                     />
-                    <input
+                    <FormInput
+                        label="Password"
                         type="password"
-                        placeholder="Password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(value) => setPassword(value)}
                         required
-                        className="auth-input"
                     />
                     {isRegister && (
                         <>
-                            <input
+                            <FormInput
+                                label="Confirm Password"
                                 type="password"
-                                placeholder="Confirm Password"
                                 value={confirmPassword}
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
+                                onChange={(value) => setConfirmPassword(value)}
                                 required
-                                className="auth-input"
                             />
-                            <input
+                            <FormInput
+                                label="Staff Key (Optional)"
                                 type="text"
-                                placeholder="Staff Key (optional)"
                                 value={staffKey}
-                                onChange={(e) => setStaffKey(e.target.value)}
-                                className="auth-input"
+                                onChange={(value) => setStaffKey(value)}
                             />
                         </>
                     )}
                     <button
                         type="submit"
-                        className="auth-button"
+                        className="form-submit-btn"
                         disabled={loading}
                     >
                         {loading

@@ -106,109 +106,116 @@ export function Profile() {
     };
 
     return (
-        <div className="profile-card">
-            <h2 className="profile-title">Profile</h2>
+        <div className="profile-page">
+            <div className="profile-card">
+                <h2 className="profile-title">Profile</h2>
 
-            <div className="profile-fields">
-                <EditableField
-                    label="Name"
-                    value={user.name || "—"}
-                    field="name"
-                    editingField={editingField}
-                    tempValue={tempValue}
-                    setTempValue={setTempValue}
-                    handleEdit={handleEdit}
-                    handleSave={handleSave}
-                    cancelEdit={cancelEdit}
-                    loading={loading}
-                />
+                <div className="profile-fields">
+                    <EditableField
+                        label="Name"
+                        value={user.name || "—"}
+                        field="name"
+                        editingField={editingField}
+                        tempValue={tempValue}
+                        setTempValue={setTempValue}
+                        handleEdit={handleEdit}
+                        handleSave={handleSave}
+                        cancelEdit={cancelEdit}
+                        loading={loading}
+                    />
 
-                <EditableField
-                    label="Email"
-                    value={user.email}
-                    field="email"
-                    editingField={editingField}
-                    tempValue={tempValue}
-                    setTempValue={setTempValue}
-                    handleEdit={handleEdit}
-                    handleSave={handleSave}
-                    cancelEdit={cancelEdit}
-                    loading={loading}
-                />
+                    <EditableField
+                        label="Email"
+                        value={user.email}
+                        field="email"
+                        editingField={editingField}
+                        tempValue={tempValue}
+                        setTempValue={setTempValue}
+                        handleEdit={handleEdit}
+                        handleSave={handleSave}
+                        cancelEdit={cancelEdit}
+                        loading={loading}
+                    />
 
-                {editingField === "password" ? (
-                    <div className="field">
-                        <label>Password</label>
-                        <div className="password-edit">
-                            <input
-                                type="password"
-                                placeholder="New password"
-                                value={tempValue}
-                                onChange={(e) => setTempValue(e.target.value)}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Confirm password"
-                                value={confirmPassword}
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
-                            />
-                            <div className="edit-buttons">
-                                <button onClick={handleSave} disabled={loading}>
-                                    <Check className="icon-success" />
-                                </button>
-                                <button onClick={cancelEdit}>
-                                    <X className="icon-error" />
-                                </button>
+                    {editingField === "password" ? (
+                        <div className="field">
+                            <label>Password</label>
+                            <div className="password-edit">
+                                <input
+                                    type="password"
+                                    placeholder="New password"
+                                    value={tempValue}
+                                    onChange={(e) =>
+                                        setTempValue(e.target.value)
+                                    }
+                                />
+                                <input
+                                    type="password"
+                                    placeholder="Confirm password"
+                                    value={confirmPassword}
+                                    onChange={(e) =>
+                                        setConfirmPassword(e.target.value)
+                                    }
+                                />
+                                <div className="edit-buttons">
+                                    <button
+                                        onClick={handleSave}
+                                        disabled={loading}
+                                    >
+                                        <Check className="icon-success" />
+                                    </button>
+                                    <button onClick={cancelEdit}>
+                                        <X className="icon-error" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ) : (
-                    <div className="field flex-between">
-                        <label>Password</label>
-                        <button onClick={() => handleEdit("password")}>
-                            <Pencil className="icon-edit" />
-                        </button>
-                    </div>
-                )}
+                    ) : (
+                        <div className="field flex-between">
+                            <label>Password</label>
+                            <button onClick={() => handleEdit("password")}>
+                                <Pencil className="icon-edit" />
+                            </button>
+                        </div>
+                    )}
 
-                <div className="field">
-                    <label>Role</label>
-                    <p>{user.role}</p>
+                    <div className="field">
+                        <label>Role</label>
+                        <p>{user.role}</p>
+                    </div>
+
+                    <div className="field">
+                        <label>Joined</label>
+                        <p>
+                            {new Date(user.createdAt).toLocaleDateString(
+                                undefined,
+                                {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric"
+                                }
+                            )}
+                        </p>
+                    </div>
                 </div>
 
-                <div className="field">
-                    <label>Joined</label>
-                    <p>
-                        {new Date(user.createdAt).toLocaleDateString(
-                            undefined,
-                            {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric"
-                            }
-                        )}
-                    </p>
+                <hr className="divider" />
+
+                <ProfileEvents user={user} />
+
+                <hr className="divider" />
+
+                <div className="profile-actions">
+                    <button className="profile-button" onClick={handleLogout}>
+                        Logout
+                    </button>
+                    <button
+                        className="profile-button"
+                        onClick={handleDeleteProfile}
+                    >
+                        Delete Account
+                    </button>
                 </div>
-            </div>
-
-            <hr className="divider" />
-
-            <ProfileEvents user={user} />
-
-            <hr className="divider" />
-
-            <div className="profile-actions">
-                <button className="profile-button" onClick={handleLogout}>
-                    Logout
-                </button>
-                <button
-                    className="profile-button"
-                    onClick={handleDeleteProfile}
-                >
-                    Delete Account
-                </button>
             </div>
         </div>
     );

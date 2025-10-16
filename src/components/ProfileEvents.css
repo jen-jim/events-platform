@@ -8,7 +8,6 @@
     font-family: var(--font-heading);
     font-size: 1.75rem;
     font-weight: bold;
-    margin-bottom: 1rem;
     text-align: center;
     color: var(--color-primary);
 }
@@ -39,7 +38,6 @@
 .profile-event-title {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    margin: 0 0 0.25rem 0;
     color: var(--color-primary);
 }
 

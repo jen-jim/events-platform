@@ -12,7 +12,6 @@
     font-weight: bold;
     color: var(--color-primary);
     text-align: center;
-    margin-bottom: 0.5rem;
 }
 
 .form-input-row {
@@ -32,7 +31,7 @@
 }
 
 .form-submit-btn:hover {
-    background-color: var(--color-primary);
+    background-color: var(--color-accent-hover);
 }
 
 .form-submit-btn:active {
