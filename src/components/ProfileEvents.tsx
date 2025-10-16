@@ -1,3 +1,9 @@
+import {
+    CalendarPlus,
+    Clock,
+    MapPin,
+    ReceiptPoundSterling
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import type { User } from "../contexts/AuthContext";
@@ -44,34 +50,59 @@ export function ProfileEvents({ user }: { user: User }) {
                 events.map((event) => (
                     <div key={event.id} className="border rounded p-4 mb-3">
                         <h3 className="text-lg font-semibold">{event.title}</h3>
-                        {event.description && <p>{event.description}</p>}
-                        <p>
-                            🕒 {new Date(event.startTime).toLocaleDateString()}{" "}
+                        {event.description && (
+                            <p className="flex items-center gap-2 text-gray-600 italic">
+                                {event.description}
+                            </p>
+                        )}
+                        <p className="flex items-center gap-2 text-gray-600">
+                            <Clock className="w-4 h-4 text-primary" />{" "}
+                            {new Date(event.startTime).toLocaleDateString(
+                                undefined,
+                                {
+                                    weekday: "short",
+                                    month: "short",
+                                    day: "numeric"
+                                }
+                            )}{" "}
                             {new Date(event.startTime).toLocaleTimeString([], {
                                 hour: "2-digit",
                                 minute: "2-digit"
                             })}
                             {event.endTime &&
-                                ` - ${new Date(
-                                    event.endTime
-                                ).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit"
-                                })}`}
+                                `-${new Date(event.endTime).toLocaleTimeString(
+                                    [],
+                                    {
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    }
+                                )}`}
                         </p>
-                        {event.location && <p>📍 {event.location}</p>}
+                        {event.location && (
+                            <p className="flex items-center gap-2 text-gray-600">
+                                <MapPin className="w-4 h-4 text-primary" />{" "}
+                                {event.location}
+                            </p>
+                        )}
                         {event.price && event.price > 0 ? (
-                            <p>💰 £{event.price.toFixed(2)}</p>
+                            <p className="flex items-center gap-2 text-gray-600">
+                                <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
+                                £{event.price.toFixed(2)}
+                            </p>
                         ) : (
-                            <p>💰 Free</p>
+                            <p className="flex items-center gap-2 text-gray-600">
+                                <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
+                                Free
+                            </p>
                         )}
                         <a
                             href={gcalUrl(event)}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-blue-600 underline"
+                            className="flex items-center gap-2 text-accent hover:underline"
                         >
-                            ➕ Add to Google Calendar
+                            <CalendarPlus className="w-4 h-4 text-primary" />{" "}
+                            Add to Google Calendar
                         </a>
                         <button
                             onClick={() => handleCancelSignup(event.id)}
