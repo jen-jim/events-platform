@@ -1,3 +1,4 @@
+import { CircleUser } from "lucide-react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext.tsx";
@@ -8,13 +9,16 @@ export function Navbar() {
     return (
         <nav className="p-4 border-b mb-4 flex justify-between items-center bg-gray-50">
             <Link to="/" className="font-bold text-xl">
-                Home
+                EventsHub
             </Link>
             <div className="flex items-center gap-4">
                 {user ? (
                     <>
-                        <Link to="/profile" className="ml-4">
-                            👤 {user.email}
+                        <Link
+                            to="/profile"
+                            className="flex items-center ml-4 gap-1"
+                        >
+                            <CircleUser /> {user.name}
                         </Link>
                     </>
                 ) : (
