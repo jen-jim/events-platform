@@ -23,7 +23,7 @@ export function EditEventModal({
 
     return (
         <Modal closeModal={() => setShowEditEvent(false)}>
-            <h2 className="text-xl font-semibold mb-4">Edit Event</h2>
+            <h3 className="form-title">Edit Event</h3>
 
             <form
                 onSubmit={(e) => {
@@ -86,21 +86,9 @@ export function EditEventModal({
                     step="0.01"
                 />
 
-                <div className="flex justify-end gap-2 mt-4">
-                    <button
-                        type="button"
-                        onClick={() => setShowEditEvent(false)}
-                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                    >
-                        Save
-                    </button>
-                </div>
+                <button type="submit" className="form-submit-btn">
+                    Save
+                </button>
             </form>
         </Modal>
     );
