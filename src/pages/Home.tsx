@@ -1,8 +1,8 @@
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import { CreateEvent } from "../components/CreateEvent";
 import { EventsList } from "../components/EventsList";
+import { Modal } from "../components/Modal";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchEvents, type Event } from "../services/api";
 import "./Home.css";
@@ -52,27 +52,11 @@ export function Home() {
 
             <EventsList events={events} setEvents={setEvents} />
 
-            {showModal &&
-                ReactDOM.createPortal(
-                    <div
-                        className="modal-overlay"
-                        onClick={() => setShowModal(false)}
-                    >
-                        <div
-                            className="modal-content"
-                            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
-                        >
-                            <button
-                                className="modal-close-btn"
-                                onClick={() => setShowModal(false)}
-                            >
-                                <X />
-                            </button>
-                            <CreateEvent onEventCreated={handleCreated} />
-                        </div>
-                    </div>,
-                    document.body
-                )}
+            {showModal && (
+                <Modal closeModal={() => setShowModal(false)}>
+                    <CreateEvent onEventCreated={handleCreated} />
+                </Modal>
+            )}
         </div>
     );
 }
