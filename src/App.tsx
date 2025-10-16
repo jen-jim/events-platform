@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
 import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { Home } from "./pages/Home";
