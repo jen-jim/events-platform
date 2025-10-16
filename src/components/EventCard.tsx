@@ -1,3 +1,11 @@
+import {
+    CalendarPlus,
+    Clock,
+    MapPin,
+    Pencil,
+    ReceiptPoundSterling,
+    Trash2
+} from "lucide-react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
@@ -123,21 +131,25 @@ export function EventCard({
                         <button
                             onClick={() => setShowEditEvent(true)}
                             className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                            aria-label={`Edit event: ${event.title}`}
                         >
-                            Edit
+                            <Pencil />
                         </button>
                         <button
                             onClick={handleDelete}
                             className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                            aria-label={`Delete event: ${event.title}`}
                         >
-                            Delete
+                            <Trash2 />
                         </button>
                     </div>
                 )}
 
-                <p>{event.description}</p>
-                <p>
-                    🕒{" "}
+                <p className="flex items-center gap-2 text-gray-600 italic">
+                    {event.description}
+                </p>
+                <p className="flex items-center gap-2 text-gray-600">
+                    <Clock className="w-4 h-4 text-primary" />{" "}
                     {new Date(event.startTime).toLocaleDateString(undefined, {
                         weekday: "short",
                         month: "short",
@@ -153,11 +165,22 @@ export function EventCard({
                             minute: "2-digit"
                         })}`}
                 </p>
-                {event.location && <p>📍 {event.location}</p>}
+                {event.location && (
+                    <p className="flex items-center gap-2 text-gray-600">
+                        <MapPin className="w-4 h-4 text-primary" />{" "}
+                        {event.location}
+                    </p>
+                )}
                 {event.price && event.price > 0 ? (
-                    <p>💰 £{event.price.toFixed(2)}</p>
+                    <p className="flex items-center gap-2 text-gray-600">
+                        <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
+                        £{event.price.toFixed(2)}
+                    </p>
                 ) : (
-                    <p>💰 Free</p>
+                    <p className="flex items-center gap-2 text-gray-600">
+                        <ReceiptPoundSterling className="w-4 h-4 text-primary" />{" "}
+                        Free
+                    </p>
                 )}
 
                 {user ? (
@@ -175,9 +198,10 @@ export function EventCard({
                                 href={gcalUrl(event)}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-blue-600 underline"
+                                className="flex items-center gap-2 text-accent hover:underline"
                             >
-                                ➕ Add to Google Calendar
+                                <CalendarPlus className="w-4 h-4 text-primary" />{" "}
+                                Add to Google Calendar
                             </a>
                             <button
                                 onClick={handleCancelSignup}
