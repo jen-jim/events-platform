@@ -1,11 +1,11 @@
 import { Check, Pencil, X } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ProfileEvents } from "../components/ProfileEvents";
 import { AuthContext } from "../contexts/AuthContext";
-import type { Event } from "../services/api";
-import { fetchEvents, updateUserProfile } from "../services/api";
-import { gcalUrl } from "../utils/calendar";
+import { updateUserProfile } from "../services/api";
+import { EditableField } from "../utils/EditableField";
 
 export function Profile() {
     const { user, refreshUser } = useContext(AuthContext);
@@ -14,24 +14,8 @@ export function Profile() {
     >(null);
     const [tempValue, setTempValue] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user) return;
-        fetchEvents()
-            .then((data) => {
-                // Filter only events where the user has signed up
-                const signedUpEvents = data.filter((e) =>
-                    e.Signup.some((s) => s.userEmail === user.email)
-                );
-                setEvents(signedUpEvents);
-            })
-            .catch(() => setError("Failed to load events"))
-            .finally(() => setLoading(false));
-    }, [user]);
 
     if (!user) {
         return (
@@ -42,29 +26,6 @@ export function Profile() {
     }
 
     if (loading) return <p>Loading profile...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
-
-    async function handleCancelSignup(eventId: number) {
-        if (!user) return;
-        try {
-            const res = await fetch(`/api/events/${eventId}/cancel`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: user.email })
-            });
-
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || "Failed to cancel signup");
-            }
-
-            setEvents((prev) => prev.filter((e) => e.id !== eventId));
-            toast.success("Signup cancelled!");
-        } catch (err) {
-            console.error(err);
-            toast.error("Failed to cancel signup.");
-        }
-    }
 
     async function handleDeleteProfile() {
         if (
@@ -248,59 +209,7 @@ export function Profile() {
 
             <hr className="my-6" />
 
-            <div>
-                <h2 className="text-2xl font-bold mb-4">My Events</h2>
-                {!events.length ? (
-                    <p>You have not signed up for any events yet.</p>
-                ) : (
-                    events.map((event) => (
-                        <div key={event.id} className="border rounded p-4 mb-3">
-                            <h3 className="text-lg font-semibold">
-                                {event.title}
-                            </h3>
-                            {event.description && <p>{event.description}</p>}
-                            <p>
-                                🕒{" "}
-                                {new Date(event.startTime).toLocaleDateString()}{" "}
-                                {new Date(event.startTime).toLocaleTimeString(
-                                    [],
-                                    {
-                                        hour: "2-digit",
-                                        minute: "2-digit"
-                                    }
-                                )}
-                                {event.endTime &&
-                                    ` - ${new Date(
-                                        event.endTime
-                                    ).toLocaleTimeString([], {
-                                        hour: "2-digit",
-                                        minute: "2-digit"
-                                    })}`}
-                            </p>
-                            {event.location && <p>📍 {event.location}</p>}
-                            {event.price && event.price > 0 ? (
-                                <p>💰 £{event.price.toFixed(2)}</p>
-                            ) : (
-                                <p>💰 Free</p>
-                            )}
-                            <a
-                                href={gcalUrl(event)}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-blue-600 underline"
-                            >
-                                ➕ Add to Google Calendar
-                            </a>
-                            <button
-                                onClick={() => handleCancelSignup(event.id)}
-                                className="ml-4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
-                            >
-                                Cancel Signup
-                            </button>
-                        </div>
-                    ))
-                )}
-            </div>
+            <ProfileEvents user={user} />
 
             <hr className="my-6" />
 
@@ -318,62 +227,6 @@ export function Profile() {
                     Delete Account
                 </button>
             </div>
-        </div>
-    );
-}
-
-function EditableField({
-    label,
-    value,
-    field,
-    editingField,
-    tempValue,
-    setTempValue,
-    handleEdit,
-    handleSave,
-    cancelEdit,
-    loading
-}: {
-    label: string;
-    value: string;
-    field: "name" | "email";
-    editingField: string | null;
-    tempValue: string;
-    setTempValue: (v: string) => void;
-    handleEdit: (f: "name" | "email" | "password") => void;
-    handleSave: () => void;
-    cancelEdit: () => void;
-    loading: boolean;
-}) {
-    return (
-        <div>
-            <label className="block text-gray-700 font-medium">{label}</label>
-            {editingField === field ? (
-                <div className="flex gap-2 items-center">
-                    <input
-                        type={field === "email" ? "email" : "text"}
-                        className="border p-2 rounded flex-1"
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                    />
-                    <button onClick={handleSave} disabled={loading}>
-                        <Check className="text-green-600 hover:text-green-800" />
-                    </button>
-                    <button onClick={cancelEdit}>
-                        <X className="text-red-600 hover:text-red-800" />
-                    </button>
-                </div>
-            ) : (
-                <div className="flex justify-between items-center">
-                    <p>{value}</p>
-                    <button onClick={() => handleEdit(field)}>
-                        <Pencil
-                            className="text-gray-500 hover:text-gray-700"
-                            size={18}
-                        />
-                    </button>
-                </div>
-            )}
         </div>
     );
 }

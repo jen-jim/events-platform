@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import ReactDOM from "react-dom";
 import toast from "react-hot-toast";
 import { AuthContext } from "../contexts/AuthContext";
 import {
@@ -10,6 +9,8 @@ import {
     updateEvent
 } from "../services/api";
 import { gcalUrl } from "../utils/calendar";
+import { EditEventModal } from "./EditEventModal";
+import { SignupsModal } from "./SignupsModal";
 
 export function EventCard({
     event,
@@ -26,15 +27,7 @@ export function EventCard({
 
     const [signedUp, setSignedUp] = useState(alreadySignedUp);
     const [showSignups, setShowSignups] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [title, setTitle] = useState(event.title);
-    const [description, setDescription] = useState(event.description || "");
-    const [startTime, setStartTime] = useState(event.startTime.slice(0, 16));
-    const [endTime, setEndTime] = useState(
-        event.endTime ? event.endTime.slice(0, 16) : ""
-    );
-    const [location, setLocation] = useState(event.location || "");
-    const [price, setPrice] = useState(event.price || 0);
+    const [showEditEvent, setShowEditEvent] = useState(false);
 
     async function handleSignup() {
         if (!user) {
@@ -73,8 +66,14 @@ export function EventCard({
         }
     }
 
-    async function handleSaveEdit(e: React.FormEvent) {
-        e.preventDefault();
+    async function handleSaveEdit({
+        title,
+        description,
+        startTime,
+        endTime,
+        location,
+        price
+    }: Event) {
         const formattedPrice = price ? parseFloat(price.toFixed(2)) : 0;
 
         try {
@@ -104,7 +103,7 @@ export function EventCard({
             );
 
             toast.success("Event updated!");
-            setShowModal(false);
+            setShowEditEvent(false);
         } catch {
             toast.error("Failed to update event");
         }
@@ -122,7 +121,7 @@ export function EventCard({
                 {user?.role === "staff" && (
                     <div className="flex gap-2">
                         <button
-                            onClick={() => setShowModal(true)}
+                            onClick={() => setShowEditEvent(true)}
                             className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                         >
                             Edit
@@ -202,127 +201,17 @@ export function EventCard({
                 )}
             </div>
 
-            {showModal &&
-                ReactDOM.createPortal(
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                        <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
-                            <h2 className="text-xl font-semibold mb-4">
-                                Edit Event
-                            </h2>
+            {showEditEvent && (
+                <EditEventModal
+                    event={event}
+                    setShowEditEvent={setShowEditEvent}
+                    onSubmit={handleSaveEdit}
+                />
+            )}
 
-                            <form
-                                onSubmit={handleSaveEdit}
-                                className="flex flex-col gap-3"
-                            >
-                                <input
-                                    type="text"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    className="border p-2 rounded"
-                                    placeholder="Title"
-                                    required
-                                />
-
-                                <textarea
-                                    value={description}
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
-                                    }
-                                    className="border p-2 rounded"
-                                    rows={3}
-                                    placeholder="Description"
-                                />
-
-                                <div className="flex gap-2">
-                                    <input
-                                        type="datetime-local"
-                                        value={startTime}
-                                        onChange={(e) =>
-                                            setStartTime(e.target.value)
-                                        }
-                                        className="border p-2 rounded w-1/2"
-                                        required
-                                    />
-                                    <input
-                                        type="datetime-local"
-                                        value={endTime}
-                                        onChange={(e) =>
-                                            setEndTime(e.target.value)
-                                        }
-                                        className="border p-2 rounded w-1/2"
-                                    />
-                                </div>
-
-                                <input
-                                    type="text"
-                                    value={location}
-                                    onChange={(e) =>
-                                        setLocation(e.target.value)
-                                    }
-                                    className="border p-2 rounded"
-                                    placeholder="Location"
-                                />
-
-                                <input
-                                    type="number"
-                                    value={price}
-                                    onChange={(e) =>
-                                        setPrice(parseFloat(e.target.value))
-                                    }
-                                    className="border p-2 rounded"
-                                    placeholder="Price (£)"
-                                    min="0"
-                                    step="0.01"
-                                />
-
-                                <div className="flex justify-end gap-2 mt-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowModal(false)}
-                                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>,
-                    document.body
-                )}
-
-            {showSignups &&
-                ReactDOM.createPortal(
-                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-                        <div className="bg-white p-6 rounded-lg w-96 relative">
-                            <h4 className="text-lg font-bold mb-3">
-                                Signed Up Users
-                            </h4>
-                            <button
-                                className="absolute top-2 right-2 text-red-600 font-bold"
-                                onClick={() => setShowSignups(false)}
-                            >
-                                ✕
-                            </button>
-                            <ul className="space-y-1">
-                                {event.Signup?.map((s) => (
-                                    <li key={s.id}>
-                                        {s.user?.name} ({s.userEmail})
-                                    </li>
-                                ))}
-                                {!event.Signup?.length && (
-                                    <li>No signups yet.</li>
-                                )}
-                            </ul>
-                        </div>
-                    </div>,
-                    document.body
-                )}
+            {showSignups && (
+                <SignupsModal event={event} setShowSignups={setShowSignups} />
+            )}
         </>
     );
 }
