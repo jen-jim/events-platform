@@ -12,7 +12,11 @@ export function Modal({
     return ReactDOM.createPortal(
         <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close-btn" onClick={closeModal}>
+                <button
+                    aria-label="Close"
+                    className="modal-close-btn"
+                    onClick={closeModal}
+                >
                     <X />
                 </button>
                 {children}

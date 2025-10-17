@@ -41,10 +41,16 @@ export function EditableField({
                         />
                         <div className="edit-buttons">
                             <button onClick={handleSave} disabled={loading}>
-                                <Check className="icon-success" />
+                                <Check
+                                    aria-label="Save"
+                                    className="icon-save"
+                                />
                             </button>
                             <button onClick={cancelEdit}>
-                                <X className="icon-error" />
+                                <X
+                                    aria-label="Cancel"
+                                    className="icon-cancel"
+                                />
                             </button>
                         </div>
                     </div>
@@ -55,7 +61,7 @@ export function EditableField({
                     <div className="view-mode">
                         <p>{value}</p>
                         <button onClick={() => handleEdit(field)}>
-                            <Pencil className="icon-edit" />
+                            <Pencil aria-label="Edit" className="icon-edit" />
                         </button>
                     </div>
                 </>

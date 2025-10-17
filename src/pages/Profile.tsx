@@ -167,10 +167,16 @@ export function Profile() {
                                         onClick={handleSave}
                                         disabled={loading}
                                     >
-                                        <Check className="icon-success" />
+                                        <Check
+                                            aria-label="Save"
+                                            className="icon-save"
+                                        />
                                     </button>
                                     <button onClick={cancelEdit}>
-                                        <X className="icon-error" />
+                                        <X
+                                            aria-label="Cancel"
+                                            className="icon-cancel"
+                                        />
                                     </button>
                                 </div>
                             </div>
@@ -179,7 +185,10 @@ export function Profile() {
                         <div className="field flex-between">
                             <span className="field-label">Password</span>
                             <button onClick={() => handleEdit("password")}>
-                                <Pencil className="icon-edit" />
+                                <Pencil
+                                    aria-label="Edit"
+                                    className="icon-edit"
+                                />
                             </button>
                         </div>
                     )}

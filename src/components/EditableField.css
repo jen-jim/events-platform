@@ -37,12 +37,12 @@
     gap: 0.5rem;
 }
 
-.icon-success {
+.icon-save {
     color: var(--color-primary);
     cursor: pointer;
 }
 
-.icon-error {
+.icon-cancel {
     color: var(--color-accent);
     cursor: pointer;
 }
