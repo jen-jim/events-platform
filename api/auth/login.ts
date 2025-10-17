@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import bcrypt from "bcrypt";
-import { setTokenCookie, signToken } from "../lib/auth.ts";
-import prisma from "../lib/prisma.ts";
+import { setTokenCookie, signToken } from "../lib/auth.js";
+import prisma from "../lib/prisma.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== "POST") {

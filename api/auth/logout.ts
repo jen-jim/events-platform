@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { setTokenCookie } from "../lib/auth.ts";
+import { setTokenCookie } from "../lib/auth.js";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== "POST") return res.status(405).end();
