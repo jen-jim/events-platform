@@ -13,7 +13,7 @@
     align-items: center;
     margin: auto;
     padding: 1rem;
-    color: var(--color-secondary);
+    color: var(--color-white);
     max-width: 800px;
     width: 100%;
 
@@ -35,10 +35,11 @@
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-secondary);
+    color: var(--color-white);
     text-decoration: none;
     transition: opacity 0.2s ease;
 }
+
 .navbar-logo:hover {
     opacity: 0.8;
 }
@@ -46,7 +47,6 @@
 .navbar-logo-icon {
     width: 28px;
     height: 28px;
-    color: var(--color-accent);
 }
 
 .navbar-links {
@@ -65,11 +65,11 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    color: var(--color-secondary);
+    color: var(--color-white);
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .navbar-user:hover,
