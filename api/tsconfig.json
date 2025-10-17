@@ -1,9 +1,7 @@
 {
-    "extends": "./tsconfig.app.json",
     "compilerOptions": {
         "module": "esnext",
         "moduleResolution": "node",
         "esModuleInterop": true
-    },
-    "include": ["api"]
+    }
 }
