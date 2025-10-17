@@ -23,8 +23,6 @@ export function EditEventModal({
 
     return (
         <Modal closeModal={() => setShowEditEvent(false)}>
-            <h3 className="form-title">Edit Event</h3>
-
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -39,8 +37,10 @@ export function EditEventModal({
                     });
                     setShowEditEvent(false);
                 }}
-                className="flex flex-col gap-3"
+                className="modal-form"
             >
+                <h3 className="form-title">Edit Event</h3>
+
                 <FormInput
                     label="Title"
                     name="title"

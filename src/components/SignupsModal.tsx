@@ -1,5 +1,6 @@
 import type { Event } from "../services/api";
 import { Modal } from "./Modal";
+import "./SignupsModal.css";
 
 export function SignupsModal({
     event,
@@ -10,15 +11,24 @@ export function SignupsModal({
 }) {
     return (
         <Modal closeModal={() => setShowSignups(false)}>
-            <h4 className="text-lg font-bold mb-3">Signed Up Users</h4>
-            <ul className="space-y-1">
-                {event.Signup?.map((s) => (
-                    <li key={s.id}>
-                        {s.user?.name} ({s.userEmail})
-                    </li>
-                ))}
-                {!event.Signup?.length && <li>No signups yet.</li>}
-            </ul>
+            <div className="signups-container">
+                <h3 className="signups-title">Signed Up Users</h3>
+                <ul className="signups-list-container">
+                    {event.Signup?.map((s) => (
+                        <li key={s.id} className="signups-list">
+                            <span className="signups-user-name">
+                                {s.user?.name}
+                            </span>{" "}
+                            <span className="signups-user-email">
+                                ({s.userEmail})
+                            </span>{" "}
+                        </li>
+                    ))}
+                    {!event.Signup?.length && (
+                        <li className="signups-empty">No signups yet.</li>
+                    )}
+                </ul>
+            </div>
         </Modal>
     );
 }

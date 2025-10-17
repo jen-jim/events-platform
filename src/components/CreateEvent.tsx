@@ -49,7 +49,7 @@ export function CreateEvent({
     }
 
     return (
-        <form onSubmit={handleSubmit} className="create-event-form">
+        <form onSubmit={handleSubmit} className="modal-form">
             <h3 className="form-title">Create New Event</h3>
 
             <FormInput
