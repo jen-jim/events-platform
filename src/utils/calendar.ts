@@ -11,7 +11,7 @@ export function toGCalDates(start: Date, end?: Date): string {
         "Z";
 
     const s = format(start);
-    const e = format(end ?? new Date(start.getTime() + 60 * 60 * 1000)); // default 1hr
+    const e = format(end ?? new Date(start.getTime() + 60 * 60 * 1000));
     return `${s}/${e}`;
 }
 
