@@ -143,6 +143,7 @@ export function Profile() {
                             <div className="password-edit">
                                 <input
                                     type="password"
+                                    name="newPassword"
                                     placeholder="New password"
                                     value={tempValue}
                                     onChange={(e) =>
@@ -151,6 +152,7 @@ export function Profile() {
                                 />
                                 <input
                                     type="password"
+                                    name="confirmPassword"
                                     placeholder="Confirm password"
                                     value={confirmPassword}
                                     onChange={(e) =>

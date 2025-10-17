@@ -43,6 +43,7 @@ export function EditEventModal({
             >
                 <FormInput
                     label="Title"
+                    name="title"
                     value={title}
                     onChange={(value) => setTitle(value)}
                     required
@@ -50,6 +51,7 @@ export function EditEventModal({
 
                 <FormInput
                     label="Description"
+                    name="description"
                     type="textarea"
                     value={description}
                     onChange={(value) => setDescription(value)}
@@ -58,6 +60,7 @@ export function EditEventModal({
                 <div className="form-input-row">
                     <FormInput
                         label="Start Time"
+                        name="startTime"
                         type="datetime-local"
                         value={startTime}
                         onChange={(value) => setStartTime(value)}
@@ -65,6 +68,7 @@ export function EditEventModal({
                     />
                     <FormInput
                         label="End Time"
+                        name="endTime"
                         type="datetime-local"
                         value={endTime}
                         onChange={(value) => setEndTime(value)}
@@ -73,12 +77,14 @@ export function EditEventModal({
 
                 <FormInput
                     label="Location"
+                    name="location"
                     value={location}
                     onChange={(value) => setLocation(value)}
                 />
 
                 <FormInput
                     label="Price (£)"
+                    name="price"
                     type="number"
                     value={price}
                     onChange={(value) => setPrice(parseFloat(value))}

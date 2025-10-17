@@ -54,6 +54,7 @@ export function CreateEvent({
 
             <FormInput
                 label="Title"
+                name="title"
                 value={title}
                 onChange={(value) => setTitle(value)}
                 required
@@ -61,6 +62,7 @@ export function CreateEvent({
 
             <FormInput
                 label="Description"
+                name="description"
                 type="textarea"
                 value={description}
                 onChange={(value) => setDescription(value)}
@@ -69,6 +71,7 @@ export function CreateEvent({
             <div className="form-input-row">
                 <FormInput
                     label="Start Time"
+                    name="startTime"
                     type="datetime-local"
                     value={startTime}
                     onChange={(value) => setStartTime(value)}
@@ -76,6 +79,7 @@ export function CreateEvent({
                 />
                 <FormInput
                     label="End Time"
+                    name="endTime"
                     type="datetime-local"
                     value={endTime}
                     onChange={(value) => setEndTime(value)}
@@ -84,12 +88,14 @@ export function CreateEvent({
 
             <FormInput
                 label="Location"
+                name="location"
                 value={location}
                 onChange={(value) => setLocation(value)}
             />
 
             <FormInput
                 label="Price (£)"
+                name="price"
                 type="number"
                 placeholder="0.00"
                 value={price}

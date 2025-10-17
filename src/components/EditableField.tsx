@@ -31,6 +31,7 @@ export function EditableField({
                 <div className="edit-mode">
                     <input
                         type={field === "email" ? "email" : "text"}
+                        name={field}
                         value={tempValue}
                         onChange={(e) => setTempValue(e.target.value)}
                     />

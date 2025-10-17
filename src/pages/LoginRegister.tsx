@@ -68,6 +68,7 @@ export function LoginRegister() {
                     {isRegister && (
                         <FormInput
                             label="Name"
+                            name="name"
                             value={name}
                             onChange={(value) => setName(value)}
                             required
@@ -75,6 +76,7 @@ export function LoginRegister() {
                     )}
                     <FormInput
                         label="Email"
+                        name="email"
                         type="email"
                         value={email}
                         onChange={(value) => setEmail(value)}
@@ -82,6 +84,7 @@ export function LoginRegister() {
                     />
                     <FormInput
                         label="Password"
+                        name="password"
                         type="password"
                         value={password}
                         onChange={(value) => setPassword(value)}
@@ -91,6 +94,7 @@ export function LoginRegister() {
                         <>
                             <FormInput
                                 label="Confirm Password"
+                                name="confirmPassword"
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(value) => setConfirmPassword(value)}
@@ -98,6 +102,7 @@ export function LoginRegister() {
                             />
                             <FormInput
                                 label="Staff Key (Optional)"
+                                name="staffKey"
                                 type="text"
                                 value={staffKey}
                                 onChange={(value) => setStaffKey(value)}
