@@ -33,8 +33,8 @@ export function Home() {
         loadEvents();
     }
 
-    if (loading) return <p>Loading events...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
+    if (loading) return <p className="loading">Loading events...</p>;
+    if (error) return <p className="error">{error}</p>;
 
     return (
         <div className="home-page">

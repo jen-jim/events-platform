@@ -86,3 +86,9 @@
 .profile-cancel-btn:hover {
     background-color: var(--color-accent-hover);
 }
+
+.profile-error {
+    color: var(--color-accent);
+    text-align: center;
+    font-style: italic;
+}

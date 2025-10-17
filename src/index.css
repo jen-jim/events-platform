@@ -39,3 +39,9 @@ button {
     flex-direction: column;
     min-height: 100vh;
 }
+
+.loading {
+    color: var(--color-accent);
+    text-align: center;
+    font-style: italic;
+}

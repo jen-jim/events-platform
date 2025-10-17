@@ -28,8 +28,8 @@ export function ProfileEvents({ user }: { user: User }) {
             .finally(() => setLoading(false));
     }, [user]);
 
-    if (loading) return <p>Loading events...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
+    if (loading) return <p className="loading">Loading events...</p>;
+    if (error) return <p className="profile-error">{error}</p>;
 
     async function handleCancelSignup(eventId: number) {
         try {

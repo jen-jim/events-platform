@@ -19,14 +19,10 @@ export function Profile() {
     const navigate = useNavigate();
 
     if (!user) {
-        return (
-            <p className="text-center mt-8 text-gray-600">
-                Please log in to view your profile.
-            </p>
-        );
+        return <p className="no-user">Please log in to view your profile.</p>;
     }
 
-    if (loading) return <p>Loading profile...</p>;
+    if (loading) return <p className="loading">Loading profile...</p>;
 
     async function handleDeleteProfile() {
         if (

@@ -113,3 +113,9 @@
 .profile-button:hover {
     background-color: var(--color-primary-hover);
 }
+
+.no-user {
+    color: var(--color-accent);
+    text-align: center;
+    font-style: italic;
+}

@@ -11,3 +11,9 @@
         max-width: 1000px;
     }
 }
+
+.error {
+    color: var(--color-accent);
+    text-align: center;
+    font-style: italic;
+}
