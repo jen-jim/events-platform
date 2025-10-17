@@ -139,10 +139,16 @@ export function Profile() {
 
                     {editingField === "password" ? (
                         <div className="field">
-                            <label>Password</label>
+                            <label
+                                className="field-label"
+                                htmlFor="newPassword"
+                            >
+                                Password
+                            </label>
                             <div className="password-edit">
                                 <input
                                     type="password"
+                                    id="newPassword"
                                     name="newPassword"
                                     placeholder="New password"
                                     value={tempValue}
@@ -152,6 +158,7 @@ export function Profile() {
                                 />
                                 <input
                                     type="password"
+                                    id="confirmPassword"
                                     name="confirmPassword"
                                     placeholder="Confirm password"
                                     value={confirmPassword}
@@ -174,7 +181,7 @@ export function Profile() {
                         </div>
                     ) : (
                         <div className="field flex-between">
-                            <label>Password</label>
+                            <span className="field-label">Password</span>
                             <button onClick={() => handleEdit("password")}>
                                 <Pencil className="icon-edit" />
                             </button>
@@ -182,12 +189,12 @@ export function Profile() {
                     )}
 
                     <div className="field">
-                        <label>Role</label>
+                        <span className="field-label">Role</span>
                         <p>{user.role}</p>
                     </div>
 
                     <div className="field">
-                        <label>Joined</label>
+                        <span className="field-label">Joined</span>
                         <p>
                             {new Date(user.createdAt).toLocaleDateString(
                                 undefined,
