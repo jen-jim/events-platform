@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
 import { Navbar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { Home } from "./pages/Home";
@@ -11,13 +12,13 @@ export default function App() {
         <AuthProvider>
             <Router>
                 <Navbar />
-                <div className="p-4 max-w-2xl mx-auto">
+                <main className="app-content">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/auth" element={<LoginRegister />} />
                         <Route path="/profile" element={<Profile />} />
                     </Routes>
-                </div>
+                </main>
             </Router>
             <Toaster position="top-center" />
         </AuthProvider>

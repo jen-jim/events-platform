@@ -23,7 +23,6 @@ export function verifyToken(token: string): AuthPayload | null {
     }
 }
 
-// Read token from cookie or Authorization header
 export function getUserFromReq(req: VercelRequest): AuthPayload | null {
     const cookies = cookie.parse(req.headers.cookie || "");
     const authHeader = req.headers.authorization;
@@ -33,11 +32,10 @@ export function getUserFromReq(req: VercelRequest): AuthPayload | null {
     return verifyToken(token);
 }
 
-// Set cookie on response
 export function setTokenCookie(res: VercelResponse, token: string): void {
     const serialized = cookie.serialize("token", token, {
         httpOnly: true,
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        maxAge: 60 * 60 * 24 * 7,
         path: "/",
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax"

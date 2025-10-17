@@ -1,6 +1,7 @@
 import { useState } from "react";
-import ReactDOM from "react-dom";
 import type { Event } from "../services/api";
+import { FormInput } from "./FormInput";
+import { Modal } from "./Modal";
 
 export function EditEventModal({
     event,
@@ -20,96 +21,81 @@ export function EditEventModal({
     const [location, setLocation] = useState(event.location || "");
     const [price, setPrice] = useState(event.price || 0);
 
-    return ReactDOM.createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
-                <h2 className="text-xl font-semibold mb-4">Edit Event</h2>
+    return (
+        <Modal closeModal={() => setShowEditEvent(false)}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit({
+                        ...event,
+                        title,
+                        description,
+                        startTime,
+                        endTime,
+                        location,
+                        price
+                    });
+                    setShowEditEvent(false);
+                }}
+                className="modal-form"
+            >
+                <h3 className="form-title">Edit Event</h3>
 
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        onSubmit({
-                            ...event,
-                            title,
-                            description,
-                            startTime,
-                            endTime,
-                            location,
-                            price
-                        });
-                        setShowEditEvent(false);
-                    }}
-                    className="flex flex-col gap-3"
-                >
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="border p-2 rounded"
-                        placeholder="Title"
+                <FormInput
+                    label="Title"
+                    name="title"
+                    value={title}
+                    onChange={(value) => setTitle(value)}
+                    required
+                />
+
+                <FormInput
+                    label="Description"
+                    name="description"
+                    type="textarea"
+                    value={description}
+                    onChange={(value) => setDescription(value)}
+                />
+
+                <div className="form-input-row">
+                    <FormInput
+                        label="Start Time"
+                        name="startTime"
+                        type="datetime-local"
+                        value={startTime}
+                        onChange={(value) => setStartTime(value)}
                         required
                     />
-
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="border p-2 rounded"
-                        rows={3}
-                        placeholder="Description"
+                    <FormInput
+                        label="End Time"
+                        name="endTime"
+                        type="datetime-local"
+                        value={endTime}
+                        onChange={(value) => setEndTime(value)}
                     />
+                </div>
 
-                    <div className="flex gap-2">
-                        <input
-                            type="datetime-local"
-                            value={startTime}
-                            onChange={(e) => setStartTime(e.target.value)}
-                            className="border p-2 rounded w-1/2"
-                            required
-                        />
-                        <input
-                            type="datetime-local"
-                            value={endTime}
-                            onChange={(e) => setEndTime(e.target.value)}
-                            className="border p-2 rounded w-1/2"
-                        />
-                    </div>
+                <FormInput
+                    label="Location"
+                    name="location"
+                    value={location}
+                    onChange={(value) => setLocation(value)}
+                />
 
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        className="border p-2 rounded"
-                        placeholder="Location"
-                    />
+                <FormInput
+                    label="Price (£)"
+                    name="price"
+                    type="number"
+                    value={price}
+                    onChange={(value) => setPrice(parseFloat(value))}
+                    min="0"
+                    step="0.01"
+                />
 
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(parseFloat(e.target.value))}
-                        className="border p-2 rounded"
-                        placeholder="Price (£)"
-                        min="0"
-                        step="0.01"
-                    />
-
-                    <div className="flex justify-end gap-2 mt-4">
-                        <button
-                            type="button"
-                            onClick={() => setShowEditEvent(false)}
-                            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                        >
-                            Save
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>,
-        document.body
+                <button type="submit" className="form-submit-btn">
+                    Save
+                </button>
+            </form>
+        </Modal>
     );
 }

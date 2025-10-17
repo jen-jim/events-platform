@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-// Extend the globalThis type so TypeScript knows about our cached instance
 const globalForPrisma = globalThis as unknown as {
     prisma?: PrismaClient;
 };

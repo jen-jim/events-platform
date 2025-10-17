@@ -18,26 +18,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-        // Check if user exists
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) {
             return res.status(401).json({ error: "Invalid email or password" });
         }
 
-        // Compare password
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
             return res.status(401).json({ error: "Invalid email or password" });
         }
 
-        // Create JWT token
         const token = signToken({
             id: user.id,
             email: user.email,
             role: user.role
         });
 
-        // Set cookie
         setTokenCookie(res, token);
 
         return res.status(200).json({

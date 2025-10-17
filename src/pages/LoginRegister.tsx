@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FormInput } from "../components/FormInput";
 import { AuthContext } from "../contexts/AuthContext";
 import { loginUser, signUpUser } from "../services/api";
+import "./LoginRegister.css";
 
 export function LoginRegister() {
     const { refreshUser } = useContext(AuthContext);
@@ -56,83 +58,84 @@ export function LoginRegister() {
     }
 
     return (
-        <div className="max-w-md mx-auto p-4 border rounded shadow">
-            <h2 className="text-xl font-bold mb-4">
-                {isRegister ? "Register" : "Login"}
-            </h2>
+        <div className="auth-page">
+            <div className="auth-container">
+                <h2 className="auth-title">
+                    {isRegister ? "Register" : "Login"}
+                </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-                {isRegister && (
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        className="border p-2 w-full"
-                    />
-                )}
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="border p-2 w-full"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="border p-2 w-full"
-                />
-                {isRegister && (
-                    <>
-                        <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                <form onSubmit={handleSubmit} className="auth-form">
+                    {isRegister && (
+                        <FormInput
+                            label="Name"
+                            name="name"
+                            value={name}
+                            onChange={(value) => setName(value)}
                             required
-                            className="border p-2 w-full"
                         />
-                        <input
-                            type="text"
-                            placeholder="Staff Key (optional)"
-                            value={staffKey}
-                            onChange={(e) => setStaffKey(e.target.value)}
-                            className="border p-2 w-full"
-                        />
-                    </>
-                )}
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 w-full"
-                    disabled={loading}
-                >
-                    {loading
-                        ? isRegister
-                            ? "Registering..."
-                            : "Logging in..."
-                        : isRegister
-                        ? "Register"
-                        : "Login"}
-                </button>
-            </form>
+                    )}
+                    <FormInput
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={email}
+                        onChange={(value) => setEmail(value)}
+                        required
+                    />
+                    <FormInput
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={(value) => setPassword(value)}
+                        required
+                    />
+                    {isRegister && (
+                        <>
+                            <FormInput
+                                label="Confirm Password"
+                                name="confirmPassword"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(value) => setConfirmPassword(value)}
+                                required
+                            />
+                            <FormInput
+                                label="Staff Key (Optional)"
+                                name="staffKey"
+                                type="text"
+                                value={staffKey}
+                                onChange={(value) => setStaffKey(value)}
+                            />
+                        </>
+                    )}
+                    <button
+                        type="submit"
+                        className="form-submit-btn"
+                        disabled={loading}
+                    >
+                        {loading
+                            ? isRegister
+                                ? "Registering..."
+                                : "Logging in..."
+                            : isRegister
+                            ? "Register"
+                            : "Login"}
+                    </button>
+                </form>
 
-            <p className="mt-4 text-center">
-                {isRegister
-                    ? "Already have an account?"
-                    : "Don't have an account?"}{" "}
-                <button
-                    className="text-blue-600 underline"
-                    onClick={() => setIsRegister(!isRegister)}
-                >
-                    {isRegister ? "Login" : "Register"}
-                </button>
-            </p>
+                <p className="auth-toggle">
+                    {isRegister
+                        ? "Already have an account?"
+                        : "Don't have an account?"}{" "}
+                    <button
+                        onClick={() => setIsRegister(!isRegister)}
+                        className="auth-toggle-btn"
+                    >
+                        {isRegister ? "Login" : "Register"}
+                    </button>
+                </p>
+            </div>
         </div>
     );
 }

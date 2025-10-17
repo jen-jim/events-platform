@@ -1,0 +1,42 @@
+.signups-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-family: var(--font-body);
+    color: var(--color-text);
+}
+
+.signups-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.signups-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.signups-list {
+    font-size: 1rem;
+}
+
+.signups-user-name {
+    color: var(--color-text);
+}
+
+.signups-user-email {
+    color: var(--color-accent);
+    font-style: italic;
+}
+
+.signups-empty {
+    text-align: center;
+    color: var(--color-accent);
+    font-style: italic;
+}

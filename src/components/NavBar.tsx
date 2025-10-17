@@ -1,26 +1,42 @@
+import { CircleUser, Coffee } from "lucide-react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext.tsx";
+import "./NavBar.css";
 
 export function Navbar() {
     const { user } = useContext(AuthContext);
 
     return (
-        <nav className="p-4 border-b mb-4 flex justify-between items-center bg-gray-50">
-            <Link to="/" className="font-bold text-xl">
-                Home
-            </Link>
-            <div className="flex items-center gap-4">
-                {user ? (
-                    <>
-                        <Link to="/profile" className="ml-4">
-                            👤 {user.email}
+        <header className="site-header">
+            <nav className="navbar">
+                <div className="navbar-left">
+                    <Link to="/" className="navbar-logo">
+                        The Cupping Room <Coffee className="navbar-logo-icon" />
+                    </Link>
+                </div>
+
+                <div className="navbar-links">
+                    {user ? (
+                        <>
+                            <Link
+                                to="/profile"
+                                className="navbar-user"
+                                title="Profile"
+                            >
+                                <CircleUser className="navbar-icon" />{" "}
+                                <span className="navbar-username">
+                                    {user.name}
+                                </span>
+                            </Link>
+                        </>
+                    ) : (
+                        <Link to="/auth" className="navbar-auth">
+                            Login / Register
                         </Link>
-                    </>
-                ) : (
-                    <Link to="/auth">Login / Register</Link>
-                )}
-            </div>
-        </nav>
+                    )}
+                </div>
+            </nav>
+        </header>
     );
 }

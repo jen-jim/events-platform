@@ -1,0 +1,32 @@
+.form-input-container {
+    min-width: 0;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    background-color: var(--color-white);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(198, 124, 72, 0.2);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-input-label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-primary);
+}

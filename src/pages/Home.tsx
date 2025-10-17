@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useState } from "react";
 import { CreateEvent } from "../components/CreateEvent";
 import { EventsList } from "../components/EventsList";
-import { AuthContext } from "../contexts/AuthContext";
+import { Modal } from "../components/Modal";
 import { fetchEvents, type Event } from "../services/api";
+import "./Home.css";
 
 export function Home() {
-    const { user } = useContext(AuthContext);
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -34,37 +33,22 @@ export function Home() {
         loadEvents();
     }
 
-    if (loading) return <p>Loading events...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
+    if (loading) return <p className="loading">Loading events...</p>;
+    if (error) return <p className="error">{error}</p>;
 
     return (
-        <div className="space-y-6">
-            <h1 className="text-3xl font-bold mb-4">Events</h1>
-            {user?.role === "staff" && (
-                <button
-                    onClick={() => setShowModal(true)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                    + Create Event
-                </button>
-            )}
-            <EventsList events={events} setEvents={setEvents} />
+        <div className="home-page">
+            <EventsList
+                events={events}
+                setEvents={setEvents}
+                setShowModal={setShowModal}
+            />
 
-            {showModal &&
-                ReactDOM.createPortal(
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg relative">
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                            >
-                                ✕
-                            </button>
-                            <CreateEvent onEventCreated={handleCreated} />
-                        </div>
-                    </div>,
-                    document.body
-                )}
+            {showModal && (
+                <Modal closeModal={() => setShowModal(false)}>
+                    <CreateEvent onEventCreated={handleCreated} />
+                </Modal>
+            )}
         </div>
     );
 }
