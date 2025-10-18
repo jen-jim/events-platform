@@ -4,6 +4,7 @@ import prisma from "../../lib/prisma.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { id } = req.query;
+    console.log(req.method);
     if (req.method !== "POST") return res.status(405).end();
 
     const { email } = req.body;
