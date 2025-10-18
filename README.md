@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# The Cupping Room (an events platform)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[The Cupping Room](https://the-cupping-room.vercel.app/) is a web application for a coffee shop to host and manage coffee events.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### For customers
 
-## React Compiler
+-   View a list of upcoming coffee cupping events
+-   Sign up for events
+-   Add events to Google Calendar
+-   Cancel event signups if needed
+-   Manage their profile: update name, email, or password
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### For staff
 
-## Expanding the ESLint configuration
+In addition to the above:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+-   Create, edit, or delete events
+-   View the list of users who signed up for each event
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Follow these steps to run The Cupping Room on your own computer.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Before running the project, make sure you have the following software installed on your computer.
+On macOS, you can use [Homebrew](https://brew.sh/), a command-line based package manager, to install the required software.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+-   Git (to clone the project repository)
+    -   Download and install from https://git-scm.com/
+    -   Or install with Homebrew:
+        ```
+        brew install git
+        ```
+-   Node.js (version 22 or higher)
+    -   Download and install from https://nodejs.org
+    -   Or install with Homebrew:
+        ```sh
+        brew install node
+        ```
+-   PostgreSQL (version 17 or higher)
+    -   Download and install from https://www.postgresql.org/download/
+    -   Or install with Homebrew:
+        ```
+        brew install postgresql@17
+        brew link postgresql@17 --force
+        ```
+-   Optional: A code editor like [VS Code](https://code.visualstudio.com/)
+    -   Not required, but will make it easier to see and edit the files
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Download the project
+
+-   From your Terminal, clone the Git repository
+    ```
+    git clone https://github.com/jen-jim/events-platform.git
+    ```
+-   Alternatively, you can also click the green "Code" button and select Download ZIP to download a ZIP file with the project.
+-   Open the folder in your code editor (optional).
+
+### Install project dependencies
+
+The project uses Node.js packages. To install them:
+
+-   Open the terminal (or command prompt) in the project folder.
+-   Run:
+    ```
+    npm install
+    ```
+
+This downloads all the necessary files and libraries the app needs.
+
+### Create environment file
+
+This file will hold variables that are necessary for running the app.
+
+-   Create a new file in the events-platform folder (root folder) named `.env`
+-   Copy and paste the following into your `.env` file
+    ```
+    STAFF_REG_KEY="pinkbourbon"
+    ```
+    The value of `STAFF_REG_KEY` will be what staff members need to enter when registering for a staff account.
+
+### Configure the database
+
+The app uses a database to store events, users, and signups.
+To set up a pre-populated database locally:
+
+-   Make sure you have PostgreSQL running locally.
+-   In the terminal, run:
+    ```
+    npm run setup-db
+    ```
+-   When this command finishes, it will give you a `DATABASE_URL` variable that should look something like:
+    ```
+    DATABASE_URL="postgresql://localuser:password@localhost:5432/cupping_room?schema=public"
+    ```
+    Paste this line into the `.env` file.
+
+### Run the app locally
+
+-   In the terminal, run:
+    ```
+    npm start
+    ```
+-   Open your browser and go to http://localhost:3000
+
+You should see the home page of the app.
