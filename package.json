@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm-run-all --parallel dev:fe dev:be",
         "dev:fe": "vite",
-        "dev:be": "vercel dev",
+        "dev:be": "nodemon --watch api --ext ts --exec tsx scripts/api-server.ts",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
