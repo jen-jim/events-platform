@@ -107,3 +107,7 @@ To set up a pre-populated database locally:
 -   Open your browser and go to http://localhost:3000
 
 You should see the home page of the app.
+
+![Homepage screenshot](public/home.png)
+
+![Profile page screenshot](public/profile.png)
