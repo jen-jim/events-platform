@@ -5,7 +5,9 @@ Customers can view and sign up for events, and staff can create and manage event
 
 Live demo: https://the-cupping-room.vercel.app/
 
----
+![Homepage screenshot](docs/screenshots/home.png)
+
+![Profile page screenshot](docs/screenshots/profile.png)
 
 ## Features
 
@@ -30,8 +32,6 @@ Here are some test accounts already in the database to log in with:
 | --------------------- | -------- | ----- |
 | staff@cuppingroom.com | coldbrew | staff |
 | user@cuppingroom.com  | coldbrew | user  |
-
----
 
 ## Getting started
 
@@ -113,10 +113,12 @@ This file will hold environment variables that are necessary for running the app
     STAFF_REG_KEY="pinkbourbon"
     JWT_SECRET="change_this_to_a_long_random_value"
     ```
+-   Change the value of `JWT_SECRET` to a long random value
 -   Save the file
 
 The `STAFF_REG_KEY` value will be what staff members need to enter when registering for a staff account.
-The `JWT_SECRET` value will be used to generate tokens for secure authorization. Change it to a long random value.
+
+The `JWT_SECRET` value will be used to generate tokens for secure authorization.
 
 ### 6. Start the app
 
@@ -126,20 +128,12 @@ The `JWT_SECRET` value will be used to generate tokens for secure authorization.
     ```
 -   Open your browser to http://localhost:3000
 
-You should see the home page of the app
-
-![Homepage screenshot](docs/screenshots/home.png)
-
-![Profile page screenshot](docs/screenshots/profile.png)
-
----
+You should see the home page of the app.
 
 ## Troubleshooting
 
 -   **`npm run setup-db` fails with permission errors** — make sure PostgreSQL is installed and running. On macOS, start the Postgres app, or run `brew services start postgresql@17`.
 -   **Database connection errors** — check that `DATABASE_URL` in `.env` matches the printed value from the setup-db script, and that PostgreSQL is running.
-
----
 
 ## Where to find things in the project
 
@@ -147,13 +141,9 @@ You should see the home page of the app
 -   `api/` - backend API endpoints
 -   `prisma/` - database schema and migrations
 
----
-
 ## Deployment
 
 The app is designed to be hosted on **Vercel**, and a managed PostgreSQL like **Neon** for the database.
-
----
 
 ## Support
 
