@@ -126,7 +126,7 @@ The `JWT_SECRET` value will be used to generate tokens for secure authorization.
     ```
     npm start
     ```
--   Open your browser to http://localhost:3000
+-   Open your browser to http://localhost:5173
 
 You should see the home page of the app.
 
