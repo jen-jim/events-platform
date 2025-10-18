@@ -16,6 +16,10 @@ export function EventsList({
 }) {
     const { user } = useContext(AuthContext);
 
+    const upcomingEvents = events.filter(
+        (event) => new Date(event.endTime || event.startTime) > new Date()
+    );
+
     return (
         <div className="events-list">
             <div className="events-header">
@@ -31,8 +35,8 @@ export function EventsList({
                 )}
             </div>
 
-            {events.length > 0 ? (
-                events.map((event) => (
+            {upcomingEvents.length > 0 ? (
+                upcomingEvents.map((event) => (
                     <EventCard
                         key={event.id}
                         event={event}
