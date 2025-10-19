@@ -45,8 +45,18 @@ export function EventCard({
         }
 
         try {
-            await signupForEvent(event.id, user.email);
+            const { signup } = await signupForEvent(event.id, user.email);
             setSignedUp(true);
+            setEvents((prev) =>
+                prev.map((e) =>
+                    e.id === event.id
+                        ? {
+                              ...e,
+                              Signup: [...e.Signup, { ...signup, user }]
+                          }
+                        : e
+                )
+            );
             toast.success("Signed up!");
         } catch {
             toast.error("Signup failed");
@@ -58,6 +68,18 @@ export function EventCard({
         try {
             await cancelSignupForEvent(event.id, user.email);
             setSignedUp(false);
+            setEvents((prev) =>
+                prev.map((e) =>
+                    e.id === event.id
+                        ? {
+                              ...e,
+                              Signup: e.Signup.filter(
+                                  (s) => s.userEmail !== user.email
+                              )
+                          }
+                        : e
+                )
+            );
             toast.success("Signup cancelled!");
         } catch {
             toast.error("Failed to cancel signup");
