@@ -3,7 +3,6 @@ import prisma from "../../lib/prisma.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { id } = req.query;
-    console.log(req.method);
     if (req.method !== "DELETE") return res.status(405).end();
 
     const eventId = parseInt(id as string, 10);
